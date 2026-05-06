@@ -1,0 +1,1616 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0" />
+<title>単位の王国だいぼうけん</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DotGothic16&family=M+PLUS+Rounded+1c:wght@400;500;700;800;900&display=swap" rel="stylesheet">
+<style>
+:root{--paper:#FFF4DC;--paper-dark:#F4E4B8;--ink:#2A2520;--ink-soft:#5C4B3D;--primary:#E63946;--gold:#F4B942;--sky:#4A90C2;--leaf:#5BAA5F;}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;}
+html,body{height:100%;overflow-x:hidden;}
+body{font-family:'M PLUS Rounded 1c',sans-serif;background:var(--paper);background-image:radial-gradient(circle at 20% 30%,rgba(244,185,66,.12) 0%,transparent 50%),radial-gradient(circle at 80% 70%,rgba(74,144,194,.08) 0%,transparent 50%),repeating-linear-gradient(0deg,transparent 0,transparent 24px,rgba(92,75,61,.04) 24px,rgba(92,75,61,.04) 25px);color:var(--ink);min-height:100vh;padding:16px;line-height:1.6;}
+.app{max-width:540px;margin:0 auto;}
+.header{text-align:center;padding:12px 0 20px;}
+.header__label{display:inline-block;font-family:'DotGothic16',monospace;font-size:11px;background:var(--ink);color:var(--paper);padding:3px 10px;letter-spacing:.2em;margin-bottom:8px;}
+.header__title{font-family:'DotGothic16',monospace;font-size:26px;color:var(--primary);text-shadow:3px 3px 0 var(--ink);line-height:1.2;letter-spacing:.05em;}
+.header__sub{font-size:12px;color:var(--ink-soft);margin-top:6px;letter-spacing:.1em;}
+.card{background:#FFFCF2;border:3px solid var(--ink);border-radius:18px;padding:22px 18px;box-shadow:6px 6px 0 var(--ink);margin-bottom:18px;}
+.section-title{font-family:'DotGothic16',monospace;font-size:15px;color:var(--ink);margin:14px 0 10px;padding-bottom:6px;border-bottom:2px dashed var(--ink-soft);display:flex;align-items:center;gap:8px;}
+.section-title:first-child{margin-top:0;}
+.section-title::before{content:'▶';color:var(--primary);}
+.choice-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:8px;}
+.choice-grid--solo{grid-template-columns:1fr;}
+.choice-grid--3{grid-template-columns:repeat(3,1fr);}
+.stage-header{font-family:'DotGothic16',monospace;font-size:11px;color:var(--ink-soft);margin:10px 0 4px;letter-spacing:.1em;display:flex;align-items:center;gap:6px;}
+.stage-header::before{content:'◆';color:var(--gold);font-size:10px;}
+.stage-header:first-child{margin-top:2px;}
+.choice{background:var(--paper);border:2.5px solid var(--ink);border-radius:12px;padding:10px 8px;cursor:pointer;text-align:center;transition:all .15s;font-family:inherit;font-size:13px;font-weight:700;color:var(--ink);line-height:1.3;}
+.choice:active{transform:translate(2px,2px);}
+.choice.is-selected{background:var(--primary);color:#FFFCF2;box-shadow:3px 3px 0 var(--ink);transform:translate(-1px,-1px);}
+.choice--full{grid-column:1/-1;background:linear-gradient(135deg,#FFE5C4,var(--gold));border-color:var(--ink);padding:14px 8px;font-size:14px;}
+.choice--full.is-selected{background:linear-gradient(135deg,var(--primary),#C42B38);color:#FFFCF2;}
+.choice__icon{font-size:24px;display:block;margin-bottom:2px;}
+.choice__sub{display:block;font-size:10px;font-weight:500;margin-top:2px;opacity:.7;}
+.choice.is-selected .choice__sub{opacity:.95;}
+.choice__stars{font-family:'DotGothic16',monospace;color:var(--gold);font-size:11px;letter-spacing:.05em;display:block;margin-bottom:2px;}
+.choice.is-selected .choice__stars{text-shadow:1px 1px 0 var(--ink);color:var(--gold);}
+.choice__example{display:block;font-size:10px;margin-top:3px;font-family:'DotGothic16',monospace;opacity:.85;letter-spacing:.02em;}
+.btn{font-family:inherit;font-weight:800;font-size:17px;padding:14px 24px;border:3px solid var(--ink);border-radius:14px;cursor:pointer;width:100%;background:var(--gold);color:var(--ink);box-shadow:5px 5px 0 var(--ink);transition:all .1s;letter-spacing:.05em;margin-top:14px;}
+.btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink);}
+.btn--primary{background:var(--primary);color:#FFFCF2;}
+.btn--leaf{background:var(--leaf);color:#FFFCF2;}
+.btn--small{font-size:14px;padding:10px 16px;box-shadow:3px 3px 0 var(--ink);}
+.btn--ghost{background:transparent;box-shadow:none;border-color:var(--ink-soft);color:var(--ink-soft);}
+.quiz-bar{display:flex;justify-content:space-between;align-items:center;background:var(--ink);color:var(--paper);padding:10px 16px;border-radius:12px;margin-bottom:10px;font-family:'DotGothic16',monospace;font-size:12px;letter-spacing:.08em;}
+.quiz-bar__mode{background:var(--gold);color:var(--ink);padding:2px 6px;border-radius:4px;font-size:10px;margin-right:6px;}
+.quiz-bar__lv{background:var(--leaf);color:#FFFCF2;padding:2px 6px;border-radius:4px;font-size:10px;margin-right:6px;}
+.quiz-bar__score{color:var(--gold);}
+.progress{height:10px;background:var(--paper-dark);border:2px solid var(--ink);border-radius:6px;overflow:hidden;margin-bottom:16px;}
+.progress__fill{height:100%;background:var(--leaf);transition:width .4s cubic-bezier(.34,1.3,.64,1);background-image:repeating-linear-gradient(45deg,transparent,transparent 6px,rgba(255,255,255,.2) 6px,rgba(255,255,255,.2) 12px);}
+.character-bubble{display:flex;align-items:flex-start;gap:10px;margin-bottom:14px;}
+.character{flex-shrink:0;width:56px;height:56px;background:var(--gold);border:2.5px solid var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:30px;box-shadow:2px 2px 0 var(--ink);}
+.character.--mili{background:var(--sky);}
+.character.--centi{background:var(--leaf);}
+.bubble{background:#FFFCF2;border:2.5px solid var(--ink);border-radius:14px;padding:10px 14px;font-size:13px;color:var(--ink-soft);position:relative;flex:1;}
+.bubble::before{content:'';position:absolute;left:-10px;top:14px;width:0;height:0;border:8px solid transparent;border-right-color:var(--ink);}
+.bubble::after{content:'';position:absolute;left:-6px;top:16px;width:0;height:0;border:6px solid transparent;border-right-color:#FFFCF2;}
+.question-card{background:var(--paper);border:3px solid var(--ink);border-radius:16px;padding:22px 18px;margin-bottom:16px;box-shadow:4px 4px 0 var(--ink);position:relative;}
+.question-card::before{content:'もんだい';position:absolute;top:-12px;left:14px;background:var(--primary);color:#FFFCF2;font-family:'DotGothic16',monospace;font-size:11px;padding:3px 10px;border:2px solid var(--ink);border-radius:6px;letter-spacing:.15em;}
+.question-card--slide::before{content:'まなぶ';background:var(--leaf);}
+.question-text{font-size:16px;font-weight:500;line-height:1.85;color:var(--ink);}
+.question-text .num{font-weight:800;color:var(--primary);font-size:1.12em;padding:0 2px;}
+.question-text--drill{text-align:center;font-size:26px;font-weight:800;line-height:1.5;padding:8px 0;letter-spacing:.02em;}
+.question-text--drill .num{font-size:1em;}
+.question-text--drill .equals{color:var(--ink-soft);margin:0 8px;}
+.question-text--drill .blank{display:inline-block;min-width:50px;border-bottom:3px solid var(--ink);color:var(--gold);padding:0 6px;}
+/* === 単位ボックス === */
+.unit-box{display:flex;flex-direction:column;border:3px solid var(--ink);border-radius:10px;background:#FFFCF2;margin:12px auto;max-width:360px;overflow:hidden;box-shadow:3px 3px 0 var(--ink);}
+.unit-box__row{display:flex;}
+.unit-box__row + .unit-box__row{border-top:2px solid var(--ink);}
+.unit-box__cell{flex:1;padding:10px 4px;text-align:center;font-weight:700;font-size:18px;min-height:44px;display:flex;align-items:center;justify-content:center;border-right:1.5px solid var(--ink-soft);}
+.unit-box__cell:last-child{border-right:none;}
+.unit-box__row--header .unit-box__cell{background:var(--ink);color:var(--paper);font-family:'DotGothic16',monospace;font-size:13px;letter-spacing:.05em;}
+.unit-box__cell--filled{color:var(--primary);font-size:22px;background:rgba(244,185,66,.18);}
+.unit-box__cell--blank{color:var(--gold);font-size:26px;background:#FFF;border:2px dashed var(--gold);font-family:'DotGothic16',monospace;}
+.unit-box__cell--empty{background:rgba(244,228,184,.3);color:#CCC;}
+.unit-box__cell--zero{color:var(--leaf);font-size:22px;background:#DFF5DC;}
+/* === チュートリアル === */
+.tutorial-slide{padding:4px;text-align:center;}
+.tutorial-slide h3{font-family:'DotGothic16',monospace;color:var(--primary);font-size:17px;margin-bottom:10px;line-height:1.4;}
+.tutorial-slide p{font-size:14px;line-height:1.7;color:var(--ink);margin:6px 0;}
+.tutorial-slide .highlight{background:var(--gold);padding:2px 8px;border-radius:6px;font-weight:800;}
+.tutorial-slide .arrow-right{font-size:24px;color:var(--leaf);font-weight:800;margin:4px;}
+.tutorial-slide .arrow-left{font-size:24px;color:var(--sky);font-weight:800;margin:4px;}
+.tutorial-slide strong{color:var(--primary);font-size:1.1em;}
+.intro-q{text-align:center;font-size:16px;font-weight:700;margin-top:10px;color:var(--ink);}
+.intro-q .num{color:var(--primary);}
+/* === 単位リスト・比率表示 === */
+.unit-list{list-style:none;padding:0;margin:10px 0;text-align:left;}
+.unit-list li{padding:7px 12px;margin:5px 0;background:rgba(244,228,184,.4);border-radius:8px;font-size:13px;line-height:1.5;border-left:4px solid var(--gold);}
+.unit-list li strong{color:var(--primary);font-family:'DotGothic16',monospace;font-size:1.1em;margin-right:4px;}
+.tutorial-slide .ratio{display:inline-block;font-family:'DotGothic16',monospace;background:#FFFCF2;border:1.5px solid var(--ink);padding:2px 8px;margin:2px;border-radius:6px;font-size:12px;}
+.tutorial-slide .big-rule{display:inline-block;background:var(--paper);border:2px solid var(--ink);padding:8px 14px;margin:6px 4px;border-radius:8px;font-weight:800;font-size:14px;box-shadow:2px 2px 0 var(--ink);}
+/* === 解説音声ボタン === */
+.audio-btn-row{display:flex;gap:8px;justify-content:center;margin:8px 0;flex-wrap:wrap;}
+.audio-btn{display:inline-flex;align-items:center;gap:4px;background:var(--sky);color:#FFFCF2;border:2.5px solid var(--ink);border-radius:10px;padding:8px 14px;font-family:inherit;font-weight:700;font-size:13px;cursor:pointer;box-shadow:2px 2px 0 var(--ink);transition:all .15s;}
+.audio-btn:active{transform:translate(2px,2px);box-shadow:0 0 0 var(--ink);}
+.audio-btn.is-playing{background:var(--leaf);animation:pulse 1s infinite;}
+.audio-btn--toggle{background:var(--paper-dark);color:var(--ink);}
+.audio-btn--toggle.is-off{background:#E5E5E5;color:#888;}
+@keyframes pulse{0%,100%{opacity:1;}50%{opacity:.7;}}
+/* === ナビ行（もどる＋つぎへ） === */
+.post-row{display:flex;gap:8px;margin-top:14px;}
+.post-row .btn{flex:1;margin-top:0;}
+.post-row.is-empty{display:none;}
+.btn--back{background:var(--paper-dark);color:var(--ink);}
+/* === ルビ（ふりがな） === */
+ruby{ruby-align:center;}
+rt{font-size:0.6em;color:var(--ink-soft);font-weight:500;letter-spacing:0;line-height:1;}
+.tutorial-slide rt{font-size:0.55em;color:var(--ink-soft);}
+.rulebox rt{font-size:0.5em;}
+/* === ホーム画面 === */
+.home-card{display:flex;flex-direction:column;gap:14px;padding:24px 18px;}
+.home-btn{background:var(--paper);border:3px solid var(--ink);border-radius:16px;padding:24px 16px;cursor:pointer;font-family:inherit;color:var(--ink);box-shadow:5px 5px 0 var(--ink);transition:all .15s;display:flex;flex-direction:column;align-items:center;gap:6px;text-align:center;}
+.home-btn:active{transform:translate(3px,3px);box-shadow:2px 2px 0 var(--ink);}
+.home-btn--intro{background:linear-gradient(135deg,#FFE5C4,var(--gold));}
+.home-btn--start{background:linear-gradient(135deg,var(--primary),#C42B38);color:#FFFCF2;}
+.home-btn__icon{font-size:42px;line-height:1;}
+.home-btn__title{font-family:'DotGothic16',monospace;font-size:16px;font-weight:800;letter-spacing:.05em;line-height:1.4;}
+.home-btn__sub{font-size:11px;opacity:.85;letter-spacing:.05em;}
+/* === モーダル === */
+.modal-overlay{position:fixed;inset:0;background:rgba(42,37,32,.65);backdrop-filter:blur(2px);display:flex;align-items:center;justify-content:center;z-index:100;padding:14px;animation:fadeIn .25s ease;}
+.modal-overlay.hidden{display:none;}
+@keyframes fadeIn{from{opacity:0;}to{opacity:1;}}
+.modal{background:#FFFCF2;border:3px solid var(--ink);border-radius:18px;padding:20px 16px 18px;max-width:480px;width:100%;max-height:88vh;overflow-y:auto;box-shadow:6px 6px 0 var(--ink);animation:popIn .35s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popIn{from{transform:scale(.7);opacity:0;}to{transform:scale(1);opacity:1;}}
+.modal__step{font-family:'DotGothic16',monospace;font-size:11px;color:var(--ink-soft);text-align:center;letter-spacing:.2em;margin-bottom:4px;}
+.modal__title{font-family:'DotGothic16',monospace;font-size:17px;color:var(--primary);text-align:center;margin-bottom:14px;text-shadow:2px 2px 0 var(--ink);}
+.modal__back{display:inline-flex;align-items:center;gap:4px;background:var(--paper-dark);border:2px solid var(--ink);color:var(--ink);font-family:inherit;font-size:12px;font-weight:700;cursor:pointer;padding:6px 10px;margin-bottom:10px;border-radius:8px;}
+.modal__back:active{transform:translate(1px,1px);}
+.modal__close{position:absolute;top:8px;right:12px;background:transparent;border:none;font-size:22px;cursor:pointer;color:var(--ink-soft);width:32px;height:32px;display:flex;align-items:center;justify-content:center;}
+.modal{position:relative;}
+.modal__body{display:flex;flex-direction:column;gap:8px;}
+.modal-grid-2{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;}
+
+/* === 9桁スライド図（PDF準拠）=== */
+/* === 9桁スライド図（マスが横一列）=== */
+.slide9{background:#FFFCF2;border:2.5px solid var(--ink);border-radius:10px;padding:14px 6px 8px;margin:14px auto;overflow-x:auto;box-shadow:3px 3px 0 var(--ink);}
+.slide9__row{display:flex;justify-content:center;align-items:center;gap:0;min-height:32px;}
+.slide9__cell{width:30px;height:30px;border:2px solid var(--ink);display:flex;align-items:center;justify-content:center;font-family:'DotGothic16',monospace;font-size:13px;font-weight:700;flex-shrink:0;transition:all .3s ease;position:relative;}
+.slide9__cell--length{background:#B8E5DA;}
+.slide9__cell--weight{background:#F5C5DC;}
+.slide9__cell--volume{background:#C8E5C0;}
+.slide9__cell--filled{background:rgba(244,185,66,.55)!important;color:var(--primary);}
+.slide9__cell--blank{background:#FFFCF2!important;color:var(--gold);border:2px dashed var(--gold);}
+/* 音声同期アニメーション用 */
+.slide9__cell--highlight{box-shadow:0 0 0 4px var(--gold),0 0 12px var(--gold);transform:scale(1.15);z-index:2;animation:cellGlow 0.8s ease infinite alternate;}
+@keyframes cellGlow{from{box-shadow:0 0 0 4px var(--gold),0 0 8px var(--gold);}to{box-shadow:0 0 0 5px var(--gold),0 0 16px var(--gold);}}
+.slide9__cell--popin{animation:popValue 0.4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes popValue{0%{transform:scale(0);}50%{transform:scale(1.4);}100%{transform:scale(1);}}
+.slide9__cell--reading{background:#FFE5C4!important;color:var(--primary)!important;}
+.slide9__cell--reading::after{content:'👆';position:absolute;top:100%;left:50%;transform:translateX(-50%);font-size:18px;animation:bounce-finger 0.6s ease infinite alternate;pointer-events:none;}
+@keyframes bounce-finger{from{transform:translate(-50%,0);}to{transform:translate(-50%,4px);}}
+.slide9__cell-dot{position:absolute;right:-10px;bottom:-2px;font-size:32px;font-weight:900;color:var(--primary);line-height:0.5;animation:dotPop 0.5s cubic-bezier(.34,1.56,.64,1);z-index:3;text-shadow:1px 1px 0 #FFFCF2,-1px -1px 0 #FFFCF2,1px -1px 0 #FFFCF2,-1px 1px 0 #FFFCF2;}
+@keyframes dotPop{0%{transform:scale(0);}50%{transform:scale(1.8);}100%{transform:scale(1);}}
+.slide9__gap{width:10px;flex-shrink:0;height:30px;}
+.slide9__row--labels{margin-top:6px;min-height:24px;}
+.slide9__label{width:30px;height:22px;text-align:center;font-family:'DotGothic16',monospace;font-size:12px;flex-shrink:0;display:flex;align-items:center;justify-content:center;}
+.slide9__label--unit{color:var(--primary);font-weight:800;font-size:13px;}
+.slide9__label--special{color:var(--primary);font-weight:800;font-size:13px;text-decoration:underline;text-decoration-color:var(--gold);text-decoration-thickness:3px;}
+.slide9__caption{text-align:center;font-size:11px;color:var(--ink-soft);margin-bottom:6px;font-family:'DotGothic16',monospace;letter-spacing:.05em;min-height:16px;}
+
+/* === 3段階イメージ図（面積・体積） === */
+/* === 立体・面積イメージ図（SVGベース・下辺揃え・全段段揃え） === */
+.stages{display:flex;align-items:flex-start;justify-content:center;gap:14px;padding:14px 8px 8px;background:#FFFCF2;border:2.5px solid var(--ink);border-radius:12px;margin:12px auto;flex-wrap:wrap;box-shadow:3px 3px 0 var(--ink);}
+.stage{display:flex;flex-direction:column;align-items:center;gap:0;min-width:80px;}
+.stage__figure{display:flex;align-items:flex-end;justify-content:center;}
+.stage__svg path,.stage__svg polygon,.stage__svg rect{stroke:var(--ink);stroke-width:1.5;stroke-linejoin:round;}
+.stage__dim-line{width:60px;border-top:1.5px dashed var(--ink-soft);margin-top:4px;}
+.stage__dim-row{font-family:'DotGothic16',monospace;font-size:11px;color:var(--ink);text-align:center;line-height:1.4;min-height:16px;}
+.stage__label{font-family:'DotGothic16',monospace;font-size:13px;text-align:center;line-height:1.3;color:var(--ink);font-weight:700;margin-top:6px;min-height:18px;}
+.stage__label .eq{display:block;color:var(--primary);font-size:0.95em;margin-top:2px;min-height:14px;}
+.stage__caption{font-family:'DotGothic16',monospace;font-size:10px;text-align:center;line-height:1.3;color:var(--ink-soft);margin-top:4px;min-height:14px;}
+.stage__caption strong{color:var(--primary);}
+
+/* === ルールBox & 3ステップ === */
+.rulebox{background:#FFE5C4;border:2.5px solid var(--ink);border-radius:10px;padding:10px 14px;margin:10px 0;font-size:13px;line-height:1.7;text-align:center;box-shadow:2px 2px 0 var(--ink);}
+.rulebox strong{color:var(--primary);}
+.rulebox--small{font-size:12px;padding:8px 12px;}
+.steps{display:flex;flex-direction:column;gap:8px;margin:14px 0;text-align:left;}
+.step{background:#FFFCF2;border:2.5px solid var(--ink);border-radius:10px;padding:10px 12px 10px 48px;font-size:13px;position:relative;line-height:1.5;box-shadow:2px 2px 0 var(--ink);}
+.step strong{color:var(--primary);}
+.step__num{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:32px;height:32px;background:var(--gold);border:2px solid var(--ink);border-radius:50%;display:flex;align-items:center;justify-content:center;font-family:'DotGothic16',monospace;font-size:16px;font-weight:800;}
+/* === answer / feedback / etc === */
+.answer-area{background:#FFFCF2;border:3px dashed var(--ink-soft);border-radius:14px;padding:18px 14px;margin-bottom:14px;}
+.answer-label{font-size:12px;color:var(--ink-soft);text-align:center;margin-bottom:10px;letter-spacing:.1em;}
+.answer-row{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:8px;}
+.input-group{display:flex;align-items:center;gap:4px;}
+.num-input{width:90px;height:56px;border:3px solid var(--ink);border-radius:10px;font-family:inherit;font-size:24px;font-weight:800;text-align:center;color:var(--primary);background:var(--paper);outline:none;transition:all .15s;-moz-appearance:textfield;}
+.num-input::-webkit-outer-spin-button,.num-input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0;}
+.num-input:focus{background:#FFFCF2;box-shadow:3px 3px 0 var(--gold);transform:translate(-1px,-1px);}
+.unit-label{font-size:18px;font-weight:700;color:var(--ink);min-width:30px;}
+.feedback{border-radius:14px;padding:16px;margin-bottom:14px;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);animation:pop .4s cubic-bezier(.34,1.56,.64,1);}
+@keyframes pop{0%{transform:scale(.85);opacity:0;}100%{transform:scale(1);opacity:1;}}
+.feedback--correct{background:#DFF5DC;}
+.feedback--wrong{background:#FFE3DC;}
+.feedback__title{font-family:'DotGothic16',monospace;font-size:22px;margin-bottom:8px;}
+.feedback--correct .feedback__title{color:var(--leaf);}
+.feedback--wrong .feedback__title{color:var(--primary);}
+.feedback__answer{font-size:14px;font-weight:700;margin-bottom:8px;}
+.feedback__explain{font-size:13px;color:var(--ink-soft);line-height:1.7;background:rgba(255,252,242,.6);padding:8px 10px;border-radius:8px;}
+.result-hero{text-align:center;padding:16px 0;}
+.result-medal{font-size:80px;margin-bottom:8px;animation:bounce .8s cubic-bezier(.34,1.56,.64,1);}
+@keyframes bounce{0%{transform:scale(0) rotate(-180deg);}100%{transform:scale(1) rotate(0);}}
+.result-title{font-family:'DotGothic16',monospace;font-size:24px;color:var(--primary);margin-bottom:6px;}
+.result-rank{display:inline-block;background:var(--gold);color:var(--ink);padding:4px 14px;font-family:'DotGothic16',monospace;font-size:13px;border:2px solid var(--ink);border-radius:8px;letter-spacing:.15em;box-shadow:2px 2px 0 var(--ink);}
+.result-stats{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin:18px 0;}
+.stat{text-align:center;padding:12px 8px;background:var(--paper);border:2px solid var(--ink);border-radius:10px;}
+.stat__num{font-family:'DotGothic16',monospace;font-size:28px;color:var(--primary);}
+.stat__label{font-size:11px;color:var(--ink-soft);letter-spacing:.1em;}
+.button-row{display:flex;gap:10px;}
+.button-row .btn{flex:1;}
+.hidden{display:none!important;}
+.footer{text-align:center;margin-top:20px;font-size:10px;color:var(--ink-soft);letter-spacing:.1em;font-family:'DotGothic16',monospace;}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <header class="header">
+    <span class="header__label">UNIT KINGDOM ADVENTURE</span>
+    <h1 class="header__title">単位の王国<br>だいぼうけん</h1>
+    <div class="header__sub">〜 たんいかんさん クエスト 〜</div>
+  </header>
+
+  <section id="screen-start">
+    <div class="card home-card">
+      <button class="home-btn home-btn--intro" id="goto-intro-btn">
+        <span class="home-btn__icon">📖</span>
+        <span class="home-btn__title">入門：単位ボックスをまなぶ</span>
+        <span class="home-btn__sub">はじめての人はここから！</span>
+      </button>
+      <button class="home-btn home-btn--start" id="goto-start-btn">
+        <span class="home-btn__icon">⚔️</span>
+        <span class="home-btn__title">ぼうけんスタート</span>
+        <span class="home-btn__sub">10もんに ちょうせん！</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- 選択モーダル -->
+  <div class="modal-overlay hidden" id="modal-overlay">
+    <div class="modal">
+      <button class="modal__close" id="modal-close" aria-label="とじる">✕</button>
+      <div class="modal__step" id="modal-step">STEP 1 / 3</div>
+      <h3 class="modal__title" id="modal-title"></h3>
+      <button class="modal__back hidden" id="modal-back">← もどる</button>
+      <div class="modal__body" id="modal-body"></div>
+    </div>
+  </div>
+
+  <section id="screen-quiz" class="hidden">
+    <div class="quiz-bar">
+      <span><span class="quiz-bar__mode" id="mode-badge">DRILL</span><span class="quiz-bar__lv" id="lv-badge">1-A</span><span id="progress-text">1/10</span></span>
+      <span class="quiz-bar__score">⭐ <span id="score-text">0</span></span>
+    </div>
+    <div class="progress"><div class="progress__fill" id="progress-fill" style="width:0%"></div></div>
+
+    <div class="character-bubble">
+      <div class="character" id="character-icon">👑</div>
+      <div class="bubble" id="character-line">よし、いっしょにとこう！</div>
+    </div>
+
+    <div class="question-card" id="question-card"><div class="question-text" id="question-text"></div></div>
+
+    <div class="answer-area" id="answer-area">
+      <div class="answer-label">こたえを にゅうりょく</div>
+      <div class="answer-row" id="answer-row"></div>
+    </div>
+
+    <div id="feedback-area"></div>
+
+    <button class="btn btn--leaf" id="submit-btn">✓ こたえる</button>
+    <div class="post-row is-empty" id="post-row">
+      <button class="btn btn--back hidden" id="back-btn">← もどる</button>
+      <button class="btn btn--primary hidden" id="next-btn">つぎの問題 →</button>
+    </div>
+    <button class="btn btn--small btn--ghost" id="quit-btn">↩ ホームへもどる</button>
+  </section>
+
+  <section id="screen-result" class="hidden">
+    <div class="card">
+      <div class="result-hero">
+        <div class="result-medal" id="result-medal">🏆</div>
+        <h2 class="result-title" id="result-title">クリア！</h2>
+        <span class="result-rank" id="result-rank">RANK S</span>
+      </div>
+      <div class="result-stats" id="result-stats">
+        <div class="stat"><div class="stat__num" id="stat-correct">0</div><div class="stat__label">せいかい</div></div>
+        <div class="stat"><div class="stat__num" id="stat-total">0</div><div class="stat__label">もんだい数</div></div>
+        <div class="stat"><div class="stat__num" id="stat-rate">0%</div><div class="stat__label">せいかいりつ</div></div>
+        <div class="stat"><div class="stat__num" id="stat-time">0</div><div class="stat__label">じかん（秒）</div></div>
+      </div>
+      <div class="button-row">
+        <button class="btn btn--small" id="retry-btn">もう一度</button>
+        <button class="btn btn--small btn--primary" id="home-btn">ホームへ</button>
+      </div>
+    </div>
+  </section>
+
+  <div class="footer">© dd-learn.com</div>
+</div>
+
+<script>
+const NAMES=['たろう','はなこ','けんた','ゆい','さくら','ひろし','まこと','あかり'];
+const ITEMS={length:['ロープ','リボン','ひも','テープ','はり金'],volume:['ジュース','お茶','ぎゅうにゅう','水','スープ'],weight:['お米','さとう','小麦こ','しお','りんご'],area:['花だん','畑','部屋','広場','プール'],cubic:['水そう','はこ','プール','ダンボール']};
+const rand=(min,max)=>Math.floor(Math.random()*(max-min+1))+min;
+const pick=(arr)=>arr[Math.floor(Math.random()*arr.length)];
+const fmt=(n)=>n.toLocaleString('ja-JP');
+const eq=(a,b)=>Math.abs(a-b)<1e-9;
+
+// ============================================================
+// 解説音声（Web Speech API）
+// ============================================================
+let audioEnabled=true;
+let jaVoice=null;
+function initVoice(){
+  if(!window.speechSynthesis) return;
+  const vs=speechSynthesis.getVoices();
+  jaVoice=vs.find(v=>v.lang&&v.lang.toLowerCase().startsWith('ja'))||null;
+}
+if(window.speechSynthesis){
+  speechSynthesis.onvoiceschanged=initVoice;
+  initVoice();
+}
+function speak(text){
+  if(!audioEnabled||!window.speechSynthesis||!text) return;
+  speechSynthesis.cancel();
+  const u=new SpeechSynthesisUtterance(text);
+  u.lang='ja-JP';
+  u.rate=0.95;
+  u.pitch=1.05;
+  if(jaVoice) u.voice=jaVoice;
+  u.onstart=()=>{document.getElementById('replay-btn')?.classList.add('is-playing');};
+  u.onend=u.onerror=()=>{document.getElementById('replay-btn')?.classList.remove('is-playing');};
+  speechSynthesis.speak(u);
+}
+function stopSpeak(){
+  if(window.speechSynthesis) speechSynthesis.cancel();
+  document.getElementById('replay-btn')?.classList.remove('is-playing');
+}
+
+const D=(eq,vals,units,exp,ch)=>({type:'drill',question:formatDrillEq(eq),answer:{values:vals,units},explanation:exp,character:ch});
+const W=(q,vals,units,exp,ch)=>({type:'word',question:q,answer:{values:vals,units},explanation:exp,character:ch});
+
+function formatDrillEq(s){
+  return s
+    .replace(/=/g,'<span class="equals">=</span>')
+    .replace(/\?(km²|cm²|m²|ha|a|km|cm|mm|kg|mg|m³|cm³|m|dL|mL|L|t|g)/g,'<span class="blank">?</span> <span class="unit-label">$1</span>')
+    .replace(/(\d[\d,.]*)(km²|cm²|m²|ha|km|cm|mm|kg|mg|m³|cm³|m|dL|mL|L|t|g|a)/g,'<span class="num">$1$2</span>');
+}
+
+// ============================================================
+// 単位ボックス描画
+// ============================================================
+const BOX_HEADERS={length:['km','m','cm','mm'],volume:['L','dL','mL'],weight:['t','kg','g'],area:['km²','ha','a','m²','cm²'],cubic:['m³','cm³']};
+function renderUnitBox(cat,values){
+  // values: 各セルに表示するもの。null/'' = 空セル, '?' = 空欄, 数値 = 入力済み
+  const headers=BOX_HEADERS[cat];
+  let h='<div class="unit-box"><div class="unit-box__row unit-box__row--header">';
+  for(const hd of headers) h+=`<div class="unit-box__cell">${hd}</div>`;
+  h+='</div><div class="unit-box__row">';
+  for(let i=0;i<headers.length;i++){
+    const v=values[i];
+    let cls='unit-box__cell';
+    let c='';
+    if(v==='?'){cls+=' unit-box__cell--blank';c='?';}
+    else if(v===0||v==='0'){cls+=' unit-box__cell--zero';c=v;}
+    else if(v!=null&&v!==''){cls+=' unit-box__cell--filled';c=v;}
+    else cls+=' unit-box__cell--empty';
+    h+=`<div class="${cls}">${c}</div>`;
+  }
+  return h+'</div></div>';
+}
+
+// ============================================================
+// PDF準拠：9桁スライド図
+// ============================================================
+const SLIDE_LAYOUT={
+  length:{3:'km',6:'m',8:'cm',9:'mm'},
+  weight:{3:'kg',6:'g',9:'mg'},
+  volume:{3:'kL',6:'L',7:'dL',9:'mL'}
+};
+const SLIDE_SPECIAL={length:[8],volume:[7]}; // 「場所で覚える」必要のある単位
+
+function render9Cell(cat,contents={},caption='',boxId=''){
+  const layout=SLIDE_LAYOUT[cat];
+  const special=SLIDE_SPECIAL[cat]||[];
+  const idAttr=boxId?` id="${boxId}"`:'';
+  let cells='',labels='';
+  for(let i=1;i<=9;i++){
+    if(i===4||i===7){cells+='<div class="slide9__gap"></div>';labels+='<div class="slide9__gap"></div>';}
+    const v=contents[i];
+    let cls=`slide9__cell slide9__cell--${cat}`;
+    let txt='';
+    if(v==='?'){cls+=' slide9__cell--blank';txt='?';}
+    else if(v!=null&&v!==''){cls+=' slide9__cell--filled';txt=v;}
+    cells+=`<div class="${cls}" data-pos="${i}">${txt}</div>`;
+    const lbl=layout[i]||'';
+    let lblCls='slide9__label';
+    if(lbl) lblCls+=special.includes(i)?' slide9__label--special':' slide9__label--unit';
+    labels+=`<div class="${lblCls}">${lbl}</div>`;
+  }
+  const cap=caption?`<div class="slide9__caption">${caption}</div>`:'';
+  return `<div class="slide9"${idAttr} data-cat="${cat}">${cap}<div class="slide9__row">${cells}</div><div class="slide9__row slide9__row--labels">${labels}</div></div>`;
+}
+
+// 数字を9桁ボックスの「単位の場所から左へ」配置
+function placeDigits(value,srcCell){
+  const s=String(Math.abs(value));
+  const placed={};
+  for(let i=0;i<s.length;i++){
+    const cell=srcCell-i;
+    if(cell>=1) placed[cell]=s[s.length-1-i];
+  }
+  return placed;
+}
+
+// ============================================================
+// SVG立体図・面積図（水平線揃え・寸法ラベル付き）
+// ============================================================
+// 正方形SVG：1辺の長さsizePx、ラベル付き
+function svgSquare(sizePx,fillColor='#B5D8E8'){
+  const pad=2,total=sizePx+pad*2;
+  return `<svg class="stage__svg" width="${total}" height="${total}" viewBox="0 0 ${total} ${total}" style="display:block;">
+    <rect x="${pad}" y="${pad}" width="${sizePx}" height="${sizePx}" fill="${fillColor}"/>
+  </svg>`;
+}
+// 立方体SVG（アイソメトリック投影：奥行き角30度）
+function svgCube(sizePx,fillTop='#A8D5A0',fillFront='#C8E5C0',fillSide='#98C590'){
+  const s=sizePx;
+  const dx=s*0.4,dy=s*0.4;
+  const pad=4;
+  const w=s+dx+pad*2;
+  const h=s+dy+pad*2;
+  const ox=pad,oy=pad+dy;
+  const front=`M ${ox} ${oy} L ${ox+s} ${oy} L ${ox+s} ${oy+s} L ${ox} ${oy+s} Z`;
+  const top=`M ${ox} ${oy} L ${ox+dx} ${oy-dy} L ${ox+s+dx} ${oy-dy} L ${ox+s} ${oy} Z`;
+  const side=`M ${ox+s} ${oy} L ${ox+s+dx} ${oy-dy} L ${ox+s+dx} ${oy+s-dy} L ${ox+s} ${oy+s} Z`;
+  return `<svg class="stage__svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;">
+    <path d="${top}" fill="${fillTop}"/>
+    <path d="${side}" fill="${fillSide}"/>
+    <path d="${front}" fill="${fillFront}"/>
+  </svg>`;
+}
+function svgCubeGrid(sizePx,gridLines,fillTop='#A8D5A0',fillFront='#C8E5C0',fillSide='#98C590'){
+  const s=sizePx;
+  const dx=s*0.4,dy=s*0.4;
+  const pad=4;
+  const w=s+dx+pad*2;
+  const h=s+dy+pad*2;
+  const ox=pad,oy=pad+dy;
+  const front=`M ${ox} ${oy} L ${ox+s} ${oy} L ${ox+s} ${oy+s} L ${ox} ${oy+s} Z`;
+  const top=`M ${ox} ${oy} L ${ox+dx} ${oy-dy} L ${ox+s+dx} ${oy-dy} L ${ox+s} ${oy} Z`;
+  const side=`M ${ox+s} ${oy} L ${ox+s+dx} ${oy-dy} L ${ox+s+dx} ${oy+s-dy} L ${ox+s} ${oy+s} Z`;
+  let grid='';
+  const step=s/gridLines;
+  const dxStep=dx/gridLines, dyStep=dy/gridLines;
+  for(let i=1;i<gridLines;i++){
+    grid+=`<line x1="${ox+i*step}" y1="${oy}" x2="${ox+i*step}" y2="${oy+s}" stroke="#5C4B3D" stroke-width="0.4" opacity="0.5"/>`;
+    grid+=`<line x1="${ox}" y1="${oy+i*step}" x2="${ox+s}" y2="${oy+i*step}" stroke="#5C4B3D" stroke-width="0.4" opacity="0.5"/>`;
+    grid+=`<line x1="${ox+i*step}" y1="${oy}" x2="${ox+i*step+dx}" y2="${oy-dy}" stroke="#5C4B3D" stroke-width="0.4" opacity="0.5"/>`;
+    grid+=`<line x1="${ox+i*dxStep}" y1="${oy-i*dyStep}" x2="${ox+s+i*dxStep}" y2="${oy-i*dyStep}" stroke="#5C4B3D" stroke-width="0.4" opacity="0.5"/>`;
+    grid+=`<line x1="${ox+s}" y1="${oy+i*step}" x2="${ox+s+dx}" y2="${oy+i*step-dy}" stroke="#5C4B3D" stroke-width="0.4" opacity="0.5"/>`;
+    grid+=`<line x1="${ox+s+i*dxStep}" y1="${oy-i*dyStep}" x2="${ox+s+i*dxStep}" y2="${oy+s-i*dyStep}" stroke="#5C4B3D" stroke-width="0.4" opacity="0.5"/>`;
+  }
+  return `<svg class="stage__svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}" style="display:block;">
+    <path d="${top}" fill="${fillTop}"/>
+    <path d="${side}" fill="${fillSide}"/>
+    <path d="${front}" fill="${fillFront}"/>
+    ${grid}
+  </svg>`;
+}
+
+// 面積の3段階イメージ図（SVG・下辺揃え・全段段揃え）
+function renderAreaStages(){
+  return `<div class="stages">
+    <div class="stage">
+      <div class="stage__figure" style="height:100px;display:flex;align-items:flex-end;">
+        ${svgSquare(28,'#B5D8E8')}
+      </div>
+      <div class="stage__dim-line"></div>
+      <div class="stage__dim-row">1辺</div>
+      <div class="stage__dim-row">1m</div>
+      <div class="stage__label">1m²<span class="eq">&nbsp;</span></div>
+      <div class="stage__caption">1m × 1m</div>
+    </div>
+    <div class="stage">
+      <div class="stage__figure" style="height:100px;display:flex;align-items:flex-end;">
+        ${svgSquare(56,'#B5D8E8')}
+      </div>
+      <div class="stage__dim-line"></div>
+      <div class="stage__dim-row">1辺</div>
+      <div class="stage__dim-row">10m</div>
+      <div class="stage__label">100m²<span class="eq">=1a</span></div>
+      <div class="stage__caption"><strong>1a</strong>（アール）</div>
+    </div>
+    <div class="stage">
+      <div class="stage__figure" style="height:100px;display:flex;align-items:flex-end;">
+        ${svgSquare(96,'#B5D8E8')}
+      </div>
+      <div class="stage__dim-line"></div>
+      <div class="stage__dim-row">1辺</div>
+      <div class="stage__dim-row">100m</div>
+      <div class="stage__label">10000m²<span class="eq">=1ha</span></div>
+      <div class="stage__caption"><strong>1ha</strong>（ヘクタール）</div>
+    </div>
+  </div>`;
+}
+// 体積の3段階イメージ図（SVG・下辺揃え・全段段揃え）
+function renderVolumeStages(){
+  return `<div class="stages">
+    <div class="stage">
+      <div class="stage__figure" style="height:130px;display:flex;align-items:flex-end;">
+        ${svgCube(24,'#A8D5A0','#C8E5C0','#98C590')}
+      </div>
+      <div class="stage__dim-line"></div>
+      <div class="stage__dim-row">1辺</div>
+      <div class="stage__dim-row">1cm</div>
+      <div class="stage__label">1cm³<span class="eq">=1mL</span></div>
+      <div class="stage__caption"><strong>1mL</strong></div>
+    </div>
+    <div class="stage">
+      <div class="stage__figure" style="height:130px;display:flex;align-items:flex-end;">
+        ${svgCubeGrid(50,5,'#A8D5A0','#C8E5C0','#98C590')}
+      </div>
+      <div class="stage__dim-line"></div>
+      <div class="stage__dim-row">1辺</div>
+      <div class="stage__dim-row">10cm</div>
+      <div class="stage__label">1000cm³<span class="eq">=1L</span></div>
+      <div class="stage__caption"><strong>1L</strong></div>
+    </div>
+    <div class="stage">
+      <div class="stage__figure" style="height:130px;display:flex;align-items:flex-end;">
+        ${svgCubeGrid(86,10,'#A8D5A0','#C8E5C0','#98C590')}
+      </div>
+      <div class="stage__dim-line"></div>
+      <div class="stage__dim-row">1辺</div>
+      <div class="stage__dim-row">1m</div>
+      <div class="stage__label">1m³<span class="eq">=1kL</span></div>
+      <div class="stage__caption"><strong>1m³</strong></div>
+    </div>
+  </div>`;
+}
+
+// 入門問題ヘルパー：9桁ボックス＋質問
+const I=(cat,contents,questionText,vals,units,exp,ch)=>({type:'intro',question:render9Cell(cat,contents)+`<p class="intro-q">${questionText}</p>`,answer:{values:vals,units},explanation:exp,character:ch});
+// チュートリアルスライド（html, narration, character, animations）
+// animations: [{at: 秒, type: 'highlight'|'set'|'clear'|'pop', pos: 1-9, value: '...', boxId: 'tut-box-1'}]
+const S=(html,nar,ch,anims)=>({type:'slide',question:`<div class="tutorial-slide">${addRuby(html)}</div>`,narration:nar||'',character:ch,animations:anims||[]});
+
+// 漢字にルビを振るヘルパー（決まった単語に自動でふりがなを付与）
+const RUBY_DICT={
+  // 長い語（複合語）を最優先で処理
+  '小数点':'しょうすうてん','単位':'たんい','面積':'めんせき','体積':'たいせき',
+  '段階':'だんかい','立方':'りっぽう','計算':'けいさん','問題':'もんだい',
+  '場所':'ばしょ','円玉':'えんだま','右':'みぎ','左':'ひだり',
+  // 単漢字（誤読を起こさないもののみ）
+  '長':'なが','重':'おも','例':'れい','読':'よ','書':'か',
+  '聞':'き','図':'ず','向':'む','使':'つか','同':'おな',
+  '変':'か','厚':'あつ','指':'ゆび','幅':'はば','倍':'ばい','高':'たか','箱':'はこ',
+  '約':'やく','広':'ひろ','深':'ふか','回':'かい',
+};
+function addRuby(html){
+  let out='',i=0,inRuby=false;
+  while(i<html.length){
+    if(html[i]==='<'){
+      const end=html.indexOf('>',i);
+      const tag=html.substring(i,end+1);
+      if(/^<ruby[\s>]/.test(tag)) inRuby=true;
+      else if(/^<\/ruby>/.test(tag)) inRuby=false;
+      out+=tag;
+      i=end+1;
+    }else{
+      const next=html.indexOf('<',i);
+      const chunk=next===-1?html.substring(i):html.substring(i,next);
+      if(inRuby){
+        out+=chunk;
+      }else{
+        let processed=chunk;
+        const keys=Object.keys(RUBY_DICT).sort((a,b)=>b.length-a.length);
+        for(const k of keys){
+          const re=new RegExp(k.replace(/[.*+?^${}()|[\]\\]/g,'\\$&'),'g');
+          processed=processed.replace(re,`<ruby>${k}<rt>${RUBY_DICT[k]}</rt></ruby>`);
+        }
+        out+=processed;
+      }
+      i=next===-1?html.length:next;
+    }
+  }
+  return out;
+}
+
+// ============================================================
+// 音声同期アニメーションエンジン
+// ============================================================
+let animTimers=[];
+function clearAnimTimers(){
+  animTimers.forEach(id=>clearTimeout(id));
+  animTimers=[];
+}
+function getCell(boxId,pos){
+  const box=document.getElementById(boxId);
+  if(!box) return null;
+  return box.querySelector(`[data-pos="${pos}"]`);
+}
+function applyAnimStep(step){
+  const cell=getCell(step.boxId,step.pos);
+  if(!cell) return;
+  switch(step.type){
+    case 'highlight':
+      document.querySelectorAll('.slide9__cell--highlight').forEach(c=>c.classList.remove('slide9__cell--highlight'));
+      cell.classList.add('slide9__cell--highlight');
+      break;
+    case 'set':
+      cell.textContent=step.value;
+      cell.classList.remove('slide9__cell--blank');
+      cell.classList.add('slide9__cell--filled','slide9__cell--popin');
+      setTimeout(()=>cell.classList.remove('slide9__cell--popin'),500);
+      break;
+    case 'clear':
+      cell.textContent='';
+      cell.classList.remove('slide9__cell--filled','slide9__cell--blank');
+      break;
+    case 'pop':
+      cell.classList.remove('slide9__cell--popin');
+      void cell.offsetWidth;
+      cell.classList.add('slide9__cell--popin');
+      setTimeout(()=>cell.classList.remove('slide9__cell--popin'),500);
+      break;
+    case 'reading':
+      document.querySelectorAll('.slide9__cell--reading').forEach(c=>c.classList.remove('slide9__cell--reading'));
+      cell.classList.add('slide9__cell--reading');
+      break;
+    case 'unhighlight':
+      document.querySelectorAll('.slide9__cell--highlight').forEach(c=>c.classList.remove('slide9__cell--highlight'));
+      document.querySelectorAll('.slide9__cell--reading').forEach(c=>c.classList.remove('slide9__cell--reading'));
+      break;
+    case 'dot':
+      // 指定マスの右下に「.」を浮かび上がらせる
+      if(!cell.querySelector('.slide9__cell-dot')){
+        const dot=document.createElement('span');
+        dot.className='slide9__cell-dot';
+        dot.textContent='.';
+        cell.appendChild(dot);
+      }
+      break;
+  }
+}
+function runAnimations(animations){
+  clearAnimTimers();
+  if(!animations||animations.length===0) return;
+  animations.forEach(step=>{
+    const id=setTimeout(()=>applyAnimStep(step),Math.round(step.at*1000));
+    animTimers.push(id);
+  });
+}
+
+// ============================================================
+// チュートリアルスライド（カテゴリ別に共通の説明）
+// ============================================================
+const TUTORIAL=[
+  // 1. 9つのマスの図とは
+  ()=>S(`<h3>9つのマスの図</h3>
+    ${render9Cell('length',{},'','tut-1')}
+    <div class="rulebox"><strong>① 1マス = ×10</strong><br>1つ右にうごく＝×10、左にうごく＝÷10</div>
+    <div class="rulebox rulebox--small"><strong>② cm や dL は 場所でおぼえる</strong></div>`,
+    '9つのマスがならんだ図です。1マスうごくごとに、10倍または10分の1になります。単位の場所をおぼえれば、数字をずらすだけで変換できます。',
+    null,
+    [
+      {at:0.3,type:'highlight',boxId:'tut-1',pos:3},
+      {at:1.5,type:'highlight',boxId:'tut-1',pos:4},
+      {at:2.5,type:'highlight',boxId:'tut-1',pos:5},
+      {at:3.5,type:'highlight',boxId:'tut-1',pos:6},
+      {at:4.5,type:'highlight',boxId:'tut-1',pos:7},
+      {at:5.5,type:'highlight',boxId:'tut-1',pos:8},
+      {at:6.5,type:'unhighlight',boxId:'tut-1',pos:1},
+    ]),
+  // 2. 長さの単位の場所
+  ()=>S(`<h3>📏 長さの単位の場所</h3>
+    ${render9Cell('length',{},'km・m・cm・mm のおき場所','tut-2')}
+    <div class="rulebox"><strong>km → m</strong>：3マス（×1000）<br>
+    <strong>m → cm</strong>：2マス（×100）<br>
+    <strong>cm → mm</strong>：1マス（×10）</div>
+    <p style="font-size:13px;"><strong>cm</strong> は とくべつ。場所をおぼえよう！</p>`,
+    'ながさには4つの単位があります。キロメートルからメートルまでは3マス、メートルからセンチメートルまでは2マス、センチメートルからミリメートルまでは1マス。センチメートルの場所はとくべつなので、しっかり覚えましょう。',
+    null,
+    [
+      {at:0.3,type:'highlight',boxId:'tut-2',pos:3}, // km
+      {at:2.0,type:'highlight',boxId:'tut-2',pos:6}, // m
+      {at:4.5,type:'highlight',boxId:'tut-2',pos:8}, // cm
+      {at:7.0,type:'highlight',boxId:'tut-2',pos:9}, // mm
+      {at:9.0,type:'highlight',boxId:'tut-2',pos:8}, // cm 強調
+    ]),
+  // 3. 長さの変換例：4200cm = ?m
+  ()=>S(`<h3>📏 例：4200cm = ?m</h3>
+    ${render9Cell('length',{},'cm の場所から左に4・2・0・0と書く','tut-3')}
+    <div class="rulebox"><strong>m の場所</strong>で読むと…<br>
+    左から「4」「2」 → こたえは <strong>42m</strong></div>`,
+    '4200センチメートルをメートルに変えてみましょう。cmの場所から左に、4、2、0、0と書きます。すると、mの場所で42と読めます。こたえは42メートルです。',
+    null,
+    [
+      // 「cmの場所から…」のあたりでマスが順に光って数字が入る
+      {at:1.5,type:'highlight',boxId:'tut-3',pos:8},
+      {at:2.5,type:'set',boxId:'tut-3',pos:8,value:'0'},
+      {at:3.0,type:'set',boxId:'tut-3',pos:7,value:'0'},
+      {at:3.5,type:'set',boxId:'tut-3',pos:6,value:'2'},
+      {at:4.0,type:'set',boxId:'tut-3',pos:5,value:'4'},
+      {at:5.5,type:'unhighlight',boxId:'tut-3',pos:1},
+      // 「mの場所で…」の読み上げに合わせて読む
+      {at:6.0,type:'reading',boxId:'tut-3',pos:5},
+      {at:6.7,type:'reading',boxId:'tut-3',pos:6},
+      {at:8.5,type:'pop',boxId:'tut-3',pos:6},
+    ]),
+  // 4. かさの単位の場所
+  ()=>S(`<h3>🥛 かさの単位の場所</h3>
+    ${render9Cell('volume',{},'kL・L・dL・mL のおき場所','tut-4')}
+    <div class="rulebox"><strong>kL → L</strong>：3マス（×1000）<br>
+    <strong>L → dL</strong>：1マス（×10）<br>
+    <strong>dL → mL</strong>：2マス（×100）</div>
+    <p style="font-size:13px;"><strong>dL</strong> は とくべつ。場所をおぼえよう！</p>`,
+    'かさには4つの単位があります。キロリットルからリットルまでは3マス、リットルからデシリットルまでは1マス、デシリットルからミリリットルまでは2マスです。デシリットルの場所はとくべつなので、覚えましょう。',
+    null,
+    [
+      {at:0.3,type:'highlight',boxId:'tut-4',pos:3}, // kL
+      {at:2.0,type:'highlight',boxId:'tut-4',pos:6}, // L
+      {at:4.0,type:'highlight',boxId:'tut-4',pos:7}, // dL
+      {at:6.5,type:'highlight',boxId:'tut-4',pos:9}, // mL
+      {at:9.0,type:'highlight',boxId:'tut-4',pos:7}, // dL 強調
+    ]),
+  // 5. かさの変換例：3000mL = ?L（小数点なし）
+  ()=>S(`<h3>🥛 例：3000mL = ?L</h3>
+    ${render9Cell('volume',{},'mL の場所から左に 3・0・0・0 と書く','tut-5')}
+    <div class="rulebox"><strong>L の場所</strong>で読むと…<br>
+    こたえは <strong>3L</strong></div>`,
+    '3000ミリリットルをリットルに変えてみましょう。ミリリットルの場所から左に、3、0、0、0と書きます。リットルの場所で3と読めるので、こたえは3リットルです。',
+    null,
+    [
+      {at:1.5,type:'highlight',boxId:'tut-5',pos:9},
+      {at:3.0,type:'set',boxId:'tut-5',pos:9,value:'0'},
+      {at:3.5,type:'set',boxId:'tut-5',pos:8,value:'0'},
+      {at:4.0,type:'set',boxId:'tut-5',pos:7,value:'0'},
+      {at:4.5,type:'set',boxId:'tut-5',pos:6,value:'3'},
+      {at:5.5,type:'unhighlight',boxId:'tut-5',pos:1},
+      {at:6.0,type:'reading',boxId:'tut-5',pos:6},
+      {at:8.5,type:'pop',boxId:'tut-5',pos:6},
+    ]),
+  // 6. 重さの単位の場所
+  ()=>S(`<h3>⚖️ 重さの単位の場所</h3>
+    ${render9Cell('weight',{},'kg・g・mg のおき場所','tut-6')}
+    <div class="rulebox"><strong>kg → g</strong>：3マス（×1000）<br>
+    <strong>g → mg</strong>：3マス（×1000）</div>
+    <p style="font-size:13px;">重さは <strong>ぜんぶ ×1000ずつ</strong>！</p>`,
+    'おもさには3つの単位があります。キログラムからグラムまで3マス、グラムからミリグラムまでも3マスです。両方とも1000倍ずつなので、覚えやすいです。',
+    null,
+    [
+      {at:0.3,type:'highlight',boxId:'tut-6',pos:3}, // kg
+      {at:2.0,type:'highlight',boxId:'tut-6',pos:6}, // g
+      {at:4.5,type:'highlight',boxId:'tut-6',pos:9}, // mg
+    ]),
+  // 7. 計算の3ステップ
+  ()=>S(`<h3>🌟 計算の3ステップ</h3>
+    <div class="steps">
+      <div class="step"><span class="step__num">1</span><strong>そろえる</strong><br>みんな同じ単位にする</div>
+      <div class="step"><span class="step__num">2</span><strong>計算する</strong><br>＋ − × ÷ ふつうに計算</div>
+      <div class="step"><span class="step__num">3</span><strong>もどす</strong><br>聞かれた単位に変える</div>
+    </div>
+    <div class="rulebox rulebox--small">この順番でやれば<strong>ケアレスミスゼロ</strong>！</div>`,
+    '計算の3ステップです。まず単位をそろえる。次に計算する。最後にもどす。この順番でやれば、計算ミスはゼロにできます。',
+    null,
+    []),
+  // 8. 面積の3段階イメージ図
+  ()=>S(`<h3>📐 面積：3段階のイメージ</h3>
+    ${renderAreaStages()}
+    <div class="rulebox">
+    <strong>1m × 1m = 1m²</strong><br>
+    <strong>10m × 10m = 100m² = 1a</strong><br>
+    <strong>100m × 100m = 10000m² = 1ha</strong></div>
+    <p style="font-size:12px;">a・ha は <strong>場所で覚える</strong>！</p>`,
+    '面積の単位は3段階で覚えます。1メートルかける1メートルは1平方メートル。10メートルかける10メートルは100平方メートルで、これが1アール。100メートルかける100メートルは10000平方メートルで、1ヘクタールです。',
+    null,
+    []),
+  // 9. 体積の3段階イメージ図
+  ()=>S(`<h3>📦 体積：3段階のイメージ</h3>
+    ${renderVolumeStages()}
+    <div class="rulebox">
+    <strong>1cm × 1cm × 1cm = 1cm³（1mL）</strong><br>
+    <strong>10cm × 10cm × 10cm = 1000cm³（1L）</strong><br>
+    <strong>1m × 1m × 1m = 1m³（1kL）</strong></div>
+    <p style="font-size:12px;">同じ長さを <strong>たて・よこ・たかさ</strong> 3回かける！</p>`,
+    '体積は、たて、よこ、たかさをかけて求めます。たて1センチメートル、よこ1センチメートル、たかさ1センチメートルのはこは、1りっぽうセンチメートル。これは1ミリリットルと同じです。1辺が10センチメートルのはこは、1000りっぽうセンチメートルで、これは1リットルと同じです。1辺が1メートルのはこは、1りっぽうメートルで、1キロリットルと同じです。',
+    null,
+    []),
+  // 10. ステップアップ①：小数点ってなに？
+  ()=>S(`<h3>🆙 ステップアップ：小数点</h3>
+    <p>「3500mL = ?L」のように、<br>ぴったり3、ぴったり4 にならない時は…</p>
+    ${render9Cell('volume',{},'3500 を mL の場所から書く','tut-step1')}
+    <div class="rulebox"><strong>L で読むと「3」</strong><br>その右の dL に「5」がある！</div>
+    <p style="font-size:13px;color:var(--ink-soft);">みぎにあまりがあるときは <strong>小数点</strong> をつかうよ</p>`,
+    '小数点が出てくるパターンを学びましょう。たとえば3500ミリリットルをリットルに変えるとき、ミリリットルの場所から左に、3、5、0、0、と書きます。リットルの場所で3、その右、デシリットルに5があります。あまりがあるときは小数点をつかいます。',
+    null,
+    [
+      {at:2.5,type:'highlight',boxId:'tut-step1',pos:9},
+      {at:4.0,type:'set',boxId:'tut-step1',pos:9,value:'0'},
+      {at:4.5,type:'set',boxId:'tut-step1',pos:8,value:'0'},
+      {at:5.0,type:'set',boxId:'tut-step1',pos:7,value:'5'},
+      {at:5.5,type:'set',boxId:'tut-step1',pos:6,value:'3'},
+      {at:6.5,type:'unhighlight',boxId:'tut-step1',pos:1},
+      {at:7.0,type:'reading',boxId:'tut-step1',pos:6},
+      {at:9.0,type:'reading',boxId:'tut-step1',pos:7},
+    ]),
+  // 11. ステップアップ②：小数点のルール（点を打つアニメ付き）
+  ()=>S(`<h3>🆙 小数点のルール</h3>
+    ${render9Cell('volume',{6:'3',7:'5',8:'0',9:'0'},'L のすぐ右に小数点をうつ','tut-step2')}
+    <div class="rulebox"><strong>聞かれた単位の すぐ右</strong>に <strong>小数点</strong> をうつ！</div>
+    <p style="font-size:14px;text-align:center;">L の右に「.」をうつと → <strong style="color:var(--primary);font-size:1.3em;">3.5L</strong></p>
+    <div class="rulebox rulebox--small">「みぎにあまったかず」が <strong>小数点のあと</strong>に入るよ</div>`,
+    '小数点のルールはかんたんです。聞かれた単位の、すぐ右に小数点をうちます。リットルの右に点をうつと、3てん5リットルと読めます。みぎにあまった数が、小数点のあとに入ります。',
+    null,
+    [
+      {at:1.0,type:'reading',boxId:'tut-step2',pos:6},
+      {at:3.0,type:'dot',boxId:'tut-step2',pos:6},
+      {at:4.0,type:'reading',boxId:'tut-step2',pos:7},
+      {at:6.0,type:'pop',boxId:'tut-step2',pos:6},
+      {at:6.3,type:'pop',boxId:'tut-step2',pos:7},
+    ]),
+  // 12. じゅんびOK
+  ()=>S(`<h3>🎓 じゅんびOK！</h3>
+    <p>9つのマスの図と、3段階イメージ図、<br>そして小数点のルールをおぼえたかな？</p>
+    <p>このあとは、練習問題でつかってみよう！</p>
+    <div class="rulebox rulebox--small">単位は <strong>イメージ</strong> で覚える！<br>場所と図を思い出せば、こわくない！</div>`,
+    'おつかれさまでした。9つのマスの図と、3段階イメージ図、そして小数点のルールをおぼえれば、君はもう単位変換マスター見習いです。つぎは練習問題でつかってみましょう。',
+    null,
+    []),
+];
+
+// ============================================================
+// レベル定義（MECE）
+// ============================================================
+const LEVELS={
+  intro:[
+    {name:null,items:[{key:'i0',stars:'TUTORIAL',label:'📖 単位ボックスのしくみ',example:'まずはここから読もう',cats:['length','volume','weight','mixed']}]},
+    {name:'ステージ1：右にすすむ練習',items:[
+      {key:'i1a',stars:'INTRO 1-A',label:'×10 すすむ',example:'5cm → ?mm',cats:['length','volume','mixed']},
+      {key:'i2a',stars:'INTRO 2-A',label:'×100/×1000 ジャンプ',example:'5m → ?cm',cats:['length','volume','weight','mixed']},
+    ]},
+    {name:'ステージ2：左にもどる練習',items:[
+      {key:'i1b',stars:'INTRO 1-B',label:'÷10 もどる',example:'50mm → ?cm',cats:['length','volume','mixed']},
+      {key:'i2b',stars:'INTRO 2-B',label:'÷100/÷1000 もどる',example:'500cm → ?m',cats:['length','volume','weight','mixed']},
+    ]},
+  ],
+  drill:[
+    {name:'ステージ1：おとなり（×10）',items:[
+      {key:'s1a',stars:'STAGE 1-A',label:'×10 すすむ',example:'5cm = ?mm',cats:['length','volume','mixed']},
+      {key:'s1b',stars:'STAGE 1-B',label:'÷10 もどる',example:'50mm = ?cm',cats:['length','volume','mixed']},
+    ]},
+    {name:'ステージ2：ジャンプ（×100/×1000…）',items:[
+      {key:'s2a',stars:'STAGE 2-A',label:'すすむ',example:'5m = ?cm',cats:['length','volume','weight','area','cubic','mixed']},
+      {key:'s2b',stars:'STAGE 2-B',label:'もどる',example:'500cm = ?m',cats:['length','volume','weight','area','cubic','mixed']},
+    ]},
+    {name:'ステージ3：合成と分解',items:[
+      {key:'s3a',stars:'STAGE 3-A',label:'合体',example:'1m 20cm = ?cm',cats:['length','volume','weight','mixed']},
+      {key:'s3b',stars:'STAGE 3-B',label:'切りわけ',example:'1500g = ?kg ?g',cats:['length','volume','weight','mixed']},
+    ]},
+    {name:'ステージ4：小数のじゅつ',items:[
+      {key:'s4a',stars:'STAGE 4-A',label:'小数すすむ',example:'1.5km = ?m',cats:['length','volume','weight','area','cubic','mixed']},
+      {key:'s4b',stars:'STAGE 4-B',label:'小数もどる',example:'500m = ?km',cats:['length','volume','weight','area','mixed']},
+    ]},
+    {name:'ステージ5：おうよう',items:[
+      {key:'s5a',stars:'STAGE 5-A',label:'単位ちがいの計算',example:'2L − 300mL = ?dL',cats:['length','volume','weight','area','mixed']},
+    ]},
+  ],
+  word:[
+    {name:null,items:[{key:'w1',stars:'LEVEL W1',label:'単位変換のみ',example:'2m → ?cm',cats:['length','volume','weight','area','cubic','mixed']}]},
+    {name:null,items:[{key:'w2',stars:'LEVEL W2',label:'同じ単位の計算',example:'3cm + 5cm = ?cm',cats:['length','volume','weight','area','cubic','mixed']}]},
+    {name:null,items:[{key:'w3',stars:'LEVEL W3',label:'同じ単位の計算→換算',example:'3m + 2m = ?cm',cats:['length','volume','weight','area','cubic','mixed']}]},
+    {name:null,items:[{key:'w4',stars:'LEVEL W4',label:'単位混合（繰り上がりなし）',example:'1m + 50cm = ?m ?cm',cats:['length','volume','weight','mixed']}]},
+    {name:null,items:[{key:'w5',stars:'LEVEL W5',label:'単位混合（繰り上がりあり）',example:'2L − 300mL = ?L ?mL',cats:['length','volume','weight','mixed']}]},
+    {name:null,items:[{key:'w6',stars:'LEVEL W6',label:'単位混合→1つの単位に換算',example:'1m + 50cm = ?m',cats:['length','volume','weight','mixed']}]},
+  ]
+};
+
+// ============================================================
+// テンプレート
+// ============================================================
+const T={
+  intro:{
+    length:{
+      i0:TUTORIAL,
+      // ×10すすむ：cm→mm
+      i1a:[
+        ()=>{const v=rand(2,9);return I('length',placeDigits(v,8),`<span class="num">${v}cm</span> を mm にすると？`,[v*10],['mm'],`cm（マス8）の場所から右に1マス。1マス＝×10 だから ${v}×10=${v*10}`,null);},
+        ()=>{const v=rand(11,29);return I('length',placeDigits(v,8),`<span class="num">${v}cm</span> を mm にすると？`,[v*10],['mm'],`cm の場所から左に「${v}」を書く。mm の場所まで右に1マス＝×10。${v}×10=${v*10}`,null);},
+      ],
+      // ÷10もどる：mm→cm
+      i1b:[
+        ()=>{const v=rand(2,9)*10;return I('length',placeDigits(v,9),`<span class="num">${v}mm</span> を cm にすると？`,[v/10],['cm'],`mm（マス9）の場所から「${v}」を左に書く。cm（マス8）で読むと ${v/10}`,null);},
+      ],
+      // ×100/×1000：m→cm, km→m
+      i2a:[
+        ()=>{const v=rand(2,9);return I('length',placeDigits(v,6),`<span class="num">${v}m</span> を cm にすると？`,[v*100],['cm'],`m（マス6）から cm（マス8）まで2マス＝×100。${v}×100=${v*100}`,null);},
+        ()=>{const v=rand(2,9);return I('length',placeDigits(v,3),`<span class="num">${v}km</span> を m にすると？`,[v*1000],['m'],`km（マス3）から m（マス6）まで3マス＝×1000。${v}×1000=${v*1000}`,null);},
+      ],
+      // ÷100/÷1000：cm→m, m→km
+      i2b:[
+        ()=>{const v=rand(2,9)*100;return I('length',placeDigits(v,8),`<span class="num">${v}cm</span> を m にすると？`,[v/100],['m'],`cm から左に「${v}」を書く。m（マス6）で読むと ${v/100}`,null);},
+        ()=>{const v=rand(2,9)*1000;return I('length',placeDigits(v,6),`<span class="num">${fmt(v)}m</span> を km にすると？`,[v/1000],['km'],`m から左に「${fmt(v)}」を書く。km（マス3）で読むと ${v/1000}`,null);},
+      ],
+    },
+    volume:{
+      i0:TUTORIAL,
+      i1a:[ // L→dL（×10）
+        ()=>{const v=rand(2,9);return I('volume',placeDigits(v,6),`<span class="num">${v}L</span> を dL にすると？`,[v*10],['dL'],`L（マス6）から dL（マス7）まで1マス＝×10。${v}×10=${v*10}`,null);},
+      ],
+      i1b:[ // dL→L（÷10）
+        ()=>{const v=rand(2,9)*10;return I('volume',placeDigits(v,7),`<span class="num">${v}dL</span> を L にすると？`,[v/10],['L'],`dL から左に「${v}」を書く。L（マス6）で読むと ${v/10}`,null);},
+      ],
+      i2a:[ // dL→mL（×100）, L→mL（×1000）
+        ()=>{const v=rand(2,9);return I('volume',placeDigits(v,7),`<span class="num">${v}dL</span> を mL にすると？`,[v*100],['mL'],`dL（マス7）から mL（マス9）まで2マス＝×100。${v}×100=${v*100}`,null);},
+        ()=>{const v=rand(2,5);return I('volume',placeDigits(v,6),`<span class="num">${v}L</span> を mL にすると？`,[v*1000],['mL'],`L（マス6）から mL（マス9）まで3マス＝×1000。${v}×1000=${v*1000}`,null);},
+      ],
+      i2b:[
+        ()=>{const v=rand(2,9)*100;return I('volume',placeDigits(v,9),`<span class="num">${v}mL</span> を dL にすると？`,[v/100],['dL'],`mL（マス9）から左に「${v}」を書く。dL（マス7）で読むと ${v/100}`,null);},
+      ],
+    },
+    weight:{
+      i0:TUTORIAL,
+      // 重さは×10ペアなしのため i1a/i1b なし
+      i2a:[
+        ()=>{const v=rand(2,9);return I('weight',placeDigits(v,3),`<span class="num">${v}kg</span> を g にすると？`,[v*1000],['g'],`kg（マス3）から g（マス6）まで3マス＝×1000。${v}×1000=${v*1000}`,null);},
+        ()=>{const v=rand(2,5);return I('weight',placeDigits(v,3),`<span class="num">${v}t</span> を kg にすると？（t は kg と同じ場所＝マス3）`,[v*1000],['kg'],`t も マス3 の位置と覚える。3マス右が kg → ×1000`,null);},
+      ],
+      i2b:[
+        ()=>{const v=rand(2,9)*1000;return I('weight',placeDigits(v,6),`<span class="num">${fmt(v)}g</span> を kg にすると？`,[v/1000],['kg'],`g（マス6）から左に「${fmt(v)}」を書く。kg（マス3）で読むと ${v/1000}`,null);},
+      ],
+    }
+  },
+  drill:{
+    length:{
+      s1a:[()=>{const v=rand(2,15);return D(`${v}cm = ?mm`,[v*10],['mm'],`1cm=10mm。${v}×10=${v*10}mm`,'centi');},],
+      s1b:[()=>{const v=rand(2,15)*10;return D(`${v}mm = ?cm`,[v/10],['cm'],`10mm=1cm。${v}÷10=${v/10}cm`,'centi');},],
+      s2a:[
+        ()=>{const v=rand(2,9);return D(`${v}m = ?cm`,[v*100],['cm'],`1m=100cm。${v}×100=${v*100}cm`,'centi');},
+        ()=>{const v=rand(2,9);return D(`${v}km = ?m`,[v*1000],['m'],`1km=1000m。${v}×1000=${v*1000}m`,'kiro');},
+      ],
+      s2b:[
+        ()=>{const v=rand(2,9)*100;return D(`${v}cm = ?m`,[v/100],['m'],`100cm=1m。${v}÷100=${v/100}m`,'centi');},
+        ()=>{const v=rand(2,9)*1000;return D(`${fmt(v)}m = ?km`,[v/1000],['km'],`1000m=1km。${fmt(v)}÷1000=${v/1000}km`,'kiro');},
+      ],
+      s3a:[
+        ()=>{const a=rand(1,9),b=rand(1,9)*10;return D(`${a}m ${b}cm = ?cm`,[a*100+b],['cm'],`${a}m=${a*100}cm。${a*100}+${b}=${a*100+b}cm`,'centi');},
+        ()=>{const a=rand(1,5),b=rand(1,9)*100;return D(`${a}km ${b}m = ?m`,[a*1000+b],['m'],`${a}km=${a*1000}m。${a*1000}+${b}=${a*1000+b}m`,'kiro');},
+        ()=>{const a=rand(2,9),b=rand(1,9);return D(`${a}cm ${b}mm = ?mm`,[a*10+b],['mm'],`${a}cm=${a*10}mm。${a*10}+${b}=${a*10+b}mm`,'centi');},
+      ],
+      s3b:[
+        ()=>{const t=rand(1,5)*100+rand(1,9)*10;return D(`${t}cm = ?m ?cm`,[Math.floor(t/100),t%100],['m','cm'],`100cm=1m。${t}cm=${Math.floor(t/100)}m${t%100}cm`,'centi');},
+        ()=>{const t=rand(1,5)*1000+rand(1,9)*100;return D(`${fmt(t)}m = ?km ?m`,[Math.floor(t/1000),t%1000],['km','m'],`1000m=1km。${fmt(t)}m=${Math.floor(t/1000)}km${t%1000}m`,'kiro');},
+        ()=>{const t=rand(2,9)*10+rand(1,9);return D(`${t}mm = ?cm ?mm`,[Math.floor(t/10),t%10],['cm','mm'],`10mm=1cm。${t}mm=${Math.floor(t/10)}cm${t%10}mm`,'centi');},
+      ],
+      s4a:[
+        ()=>{const i=rand(1,5),d=rand(1,9);return D(`${i}.${d}km = ?m`,[i*1000+d*100],['m'],`1km=1000m。${i}.${d}×1000=${i*1000+d*100}m`,'kiro');},
+        ()=>{const i=rand(1,5),d=rand(1,9);return D(`${i}.${d}m = ?cm`,[i*100+d*10],['cm'],`1m=100cm。${i}.${d}×100=${i*100+d*10}cm`,'centi');},
+      ],
+      s4b:[
+        ()=>{const v=rand(1,9)*100;return D(`${v}m = ?km`,[v/1000],['km'],`1000m=1km。${v}÷1000=${v/1000}km`,'kiro');},
+        ()=>{const v=rand(1,9)*10;return D(`${v}cm = ?m`,[v/100],['m'],`100cm=1m。${v}÷100=${v/100}m`,'centi');},
+      ],
+      s5a:[
+        ()=>{const km=rand(2,5),m=rand(1,9)*100;return D(`${km}km - ${m}m = ?m`,[km*1000-m],['m'],`${km}km=${km*1000}m に揃える。${km*1000}-${m}=${km*1000-m}m`,'kiro');},
+        ()=>{const m=rand(1,9),cm=rand(1,9)*10;return D(`${m}m + ${cm}cm = ?cm`,[m*100+cm],['cm'],`${m}m=${m*100}cm に揃える。${m*100}+${cm}=${m*100+cm}cm`,'centi');},
+      ],
+    },
+    volume:{
+      s1a:[()=>{const v=rand(2,9);return D(`${v}L = ?dL`,[v*10],['dL'],`1L=10dL。${v}×10=${v*10}dL`,'mili');},],
+      s1b:[()=>{const v=rand(2,9)*10;return D(`${v}dL = ?L`,[v/10],['L'],`10dL=1L。${v}÷10=${v/10}L`,'mili');},],
+      s2a:[
+        ()=>{const v=rand(2,9);return D(`${v}dL = ?mL`,[v*100],['mL'],`1dL=100mL。${v}×100=${v*100}mL`,'mili');},
+        ()=>{const v=rand(2,5);return D(`${v}L = ?mL`,[v*1000],['mL'],`1L=1000mL。${v}×1000=${v*1000}mL`,'kiro');},
+      ],
+      s2b:[
+        ()=>{const v=rand(2,9)*100;return D(`${v}mL = ?dL`,[v/100],['dL'],`100mL=1dL。${v}÷100=${v/100}dL`,'mili');},
+        ()=>{const v=rand(2,5)*1000;return D(`${fmt(v)}mL = ?L`,[v/1000],['L'],`1000mL=1L。${fmt(v)}÷1000=${v/1000}L`,'kiro');},
+      ],
+      s3a:[
+        ()=>{const a=rand(1,5),b=rand(1,9);return D(`${a}L ${b}dL = ?dL`,[a*10+b],['dL'],`${a}L=${a*10}dL。${a*10}+${b}=${a*10+b}dL`,'mili');},
+        ()=>{const a=rand(2,9),b=rand(1,9)*10;return D(`${a}dL ${b}mL = ?mL`,[a*100+b],['mL'],`${a}dL=${a*100}mL。${a*100}+${b}=${a*100+b}mL`,'mili');},
+      ],
+      s3b:[
+        ()=>{const t=rand(1,5)*10+rand(1,9);return D(`${t}dL = ?L ?dL`,[Math.floor(t/10),t%10],['L','dL'],`10dL=1L。${t}dL=${Math.floor(t/10)}L${t%10}dL`,'mili');},
+        ()=>{const t=rand(2,9)*100+rand(1,9)*10;return D(`${t}mL = ?dL ?mL`,[Math.floor(t/100),t%100],['dL','mL'],`100mL=1dL。${t}mL=${Math.floor(t/100)}dL${t%100}mL`,'mili');},
+      ],
+      s4a:[
+        ()=>{const i=rand(1,3),d=rand(1,9);return D(`${i}.${d}L = ?mL`,[i*1000+d*100],['mL'],`1L=1000mL。${i}.${d}×1000=${i*1000+d*100}mL`,'kiro');},
+        ()=>{const i=rand(1,5),d=rand(1,9);return D(`${i}.${d}L = ?dL`,[i*10+d],['dL'],`1L=10dL。${i}.${d}×10=${i*10+d}dL`,'mili');},
+      ],
+      s4b:[()=>{const v=rand(1,9)*100;return D(`${v}mL = ?L`,[v/1000],['L'],`1000mL=1L。${v}÷1000=${v/1000}L`,'kiro');},],
+      s5a:[()=>{const L=rand(2,4),mL=rand(1,9)*100;return D(`${L}L - ${mL}mL = ?dL`,[(L*1000-mL)/100],['dL'],`${L}L=${L*1000}mL に揃える。${L*1000}-${mL}=${L*1000-mL}mL=${(L*1000-mL)/100}dL`,'mili');},],
+    },
+    weight:{
+      s2a:[
+        ()=>{const v=rand(2,9);return D(`${v}kg = ?g`,[v*1000],['g'],`1kg=1000g。${v}×1000=${v*1000}g`,'kiro');},
+        ()=>{const v=rand(2,5);return D(`${v}t = ?kg`,[v*1000],['kg'],`1t=1000kg。${v}×1000=${v*1000}kg`,'kiro');},
+      ],
+      s2b:[
+        ()=>{const v=rand(2,9)*1000;return D(`${fmt(v)}g = ?kg`,[v/1000],['kg'],`1000g=1kg。${fmt(v)}÷1000=${v/1000}kg`,'kiro');},
+        ()=>{const v=rand(2,5)*1000;return D(`${fmt(v)}kg = ?t`,[v/1000],['t'],`1000kg=1t。${fmt(v)}÷1000=${v/1000}t`,'kiro');},
+      ],
+      s3a:[
+        ()=>{const a=rand(1,5),b=rand(1,9)*100;return D(`${a}kg ${b}g = ?g`,[a*1000+b],['g'],`${a}kg=${a*1000}g。${a*1000}+${b}=${a*1000+b}g`,'kiro');},
+        ()=>{const a=rand(1,3),b=rand(1,9)*100;return D(`${a}t ${b}kg = ?kg`,[a*1000+b],['kg'],`${a}t=${a*1000}kg。${a*1000}+${b}=${a*1000+b}kg`,'kiro');},
+      ],
+      s3b:[
+        ()=>{const t=rand(1,5)*1000+rand(1,9)*100;return D(`${fmt(t)}g = ?kg ?g`,[Math.floor(t/1000),t%1000],['kg','g'],`1000g=1kg。${fmt(t)}g=${Math.floor(t/1000)}kg${t%1000}g`,'kiro');},
+        ()=>{const t=rand(1,3)*1000+rand(1,9)*100;return D(`${fmt(t)}kg = ?t ?kg`,[Math.floor(t/1000),t%1000],['t','kg'],`1000kg=1t。${fmt(t)}kg=${Math.floor(t/1000)}t${t%1000}kg`,'kiro');},
+      ],
+      s4a:[
+        ()=>{const i=rand(1,5),d=rand(1,9);return D(`${i}.${d}kg = ?g`,[i*1000+d*100],['g'],`1kg=1000g。${i}.${d}×1000=${i*1000+d*100}g`,'kiro');},
+        ()=>{const i=rand(1,3),d=rand(1,9);return D(`${i}.${d}t = ?kg`,[i*1000+d*100],['kg'],`1t=1000kg。${i}.${d}×1000=${i*1000+d*100}kg`,'kiro');},
+      ],
+      s4b:[()=>{const v=rand(1,9)*100;return D(`${v}g = ?kg`,[v/1000],['kg'],`1000g=1kg。${v}÷1000=${v/1000}kg`,'kiro');},],
+      s5a:[()=>{const kg=rand(2,5),g=rand(1,9)*100;return D(`${kg}kg - ${g}g = ?g`,[kg*1000-g],['g'],`${kg}kg=${kg*1000}g に揃える。${kg*1000}-${g}=${kg*1000-g}g`,'kiro');},],
+    },
+    area:{
+      s2a:[
+        ()=>{const v=rand(2,9);return D(`${v}m² = ?cm²`,[v*10000],['cm²'],`1m²=10000cm²。${v}×10000=${fmt(v*10000)}cm²`,'centi');},
+        ()=>{const v=rand(2,9);return D(`${v}a = ?m²`,[v*100],['m²'],`1a=100m²。${v}×100=${v*100}m²`,'centi');},
+        ()=>{const v=rand(2,9);return D(`${v}ha = ?a`,[v*100],['a'],`1ha=100a。${v}×100=${v*100}a`,'centi');},
+        ()=>{const v=rand(2,5);return D(`${v}km² = ?ha`,[v*100],['ha'],`1km²=100ha。${v}×100=${v*100}ha`,'kiro');},
+      ],
+      s2b:[
+        ()=>{const v=rand(2,9)*10000;return D(`${fmt(v)}cm² = ?m²`,[v/10000],['m²'],`10000cm²=1m²。${fmt(v)}÷10000=${v/10000}m²`,'centi');},
+        ()=>{const v=rand(2,9)*100;return D(`${v}m² = ?a`,[v/100],['a'],`100m²=1a。${v}÷100=${v/100}a`,'centi');},
+        ()=>{const v=rand(2,9)*100;return D(`${v}a = ?ha`,[v/100],['ha'],`100a=1ha。${v}÷100=${v/100}ha`,'centi');},
+      ],
+      s4a:[
+        ()=>{const i=rand(1,5),d=rand(1,9);return D(`${i}.${d}m² = ?cm²`,[(i*10+d)*1000],['cm²'],`1m²=10000cm²。${i}.${d}×10000=${fmt((i*10+d)*1000)}cm²`,'centi');},
+        ()=>{const i=rand(1,3),d=rand(1,9);return D(`${i}.${d}ha = ?a`,[(i*10+d)*10],['a'],`1ha=100a。${i}.${d}×100=${(i*10+d)*10}a`,'centi');},
+      ],
+      s4b:[
+        ()=>{const v=rand(2,9)*1000;return D(`${fmt(v)}cm² = ?m²`,[v/10000],['m²'],`10000cm²=1m²。${fmt(v)}÷10000=${v/10000}m²`,'centi');},
+      ],
+      s5a:[
+        ()=>{const m=rand(2,5),cm=rand(2,9)*1000;return D(`${m}m² + ${fmt(cm)}cm² = ?cm²`,[m*10000+cm],['cm²'],`${m}m²=${fmt(m*10000)}cm²。${fmt(m*10000)}+${fmt(cm)}=${fmt(m*10000+cm)}cm²`,'centi');},
+      ],
+    },
+    cubic:{
+      s2a:[
+        ()=>{const v=rand(2,5);return D(`${v}m³ = ?cm³`,[v*1000000],['cm³'],`1m³=1,000,000cm³。${v}×1000000=${fmt(v*1000000)}cm³`,'centi');},
+      ],
+      s2b:[
+        ()=>{const v=rand(2,5)*1000000;return D(`${fmt(v)}cm³ = ?m³`,[v/1000000],['m³'],`1,000,000cm³=1m³。${fmt(v)}÷1000000=${v/1000000}m³`,'centi');},
+      ],
+      s4a:[
+        ()=>{const i=rand(1,3),d=rand(1,9);return D(`${i}.${d}m³ = ?cm³`,[(i*10+d)*100000],['cm³'],`1m³=1,000,000cm³。${i}.${d}×1,000,000=${fmt((i*10+d)*100000)}cm³`,'centi');},
+      ],
+    }
+  },
+  word:{
+    // ===== ながさ =====
+    length:{
+      // W1: 単位変換のみ（小数も含む）
+      w1:[
+        ()=>{const v=rand(2,9);return W(`<span class="num">${v}m</span> のロープがあります。これは何 cm ですか？`,[v*100],['cm'],`1m=100cm。${v}×100=${v*100}cm`,'centi');},
+        ()=>{const v=rand(3,15);return W(`えんぴつのながさは <span class="num">${v}cm</span> です。何 mm ですか？`,[v*10],['mm'],`1cm=10mm。${v}×10=${v*10}mm`,'centi');},
+        ()=>{const v=rand(2,9);return W(`家から学校まで <span class="num">${v}km</span> あります。何 m ですか？`,[v*1000],['m'],`1km=1000m。${v}×1000=${v*1000}m`,'kiro');},
+        ()=>{const v=rand(2,9)*1000;return W(`コースは <span class="num">${v}m</span> です。何 km ですか？`,[v/1000],['km'],`1000m=1km。${v}÷1000=${v/1000}km`,'kiro');},
+        ()=>{const i=rand(1,5),d=rand(1,9);return W(`リボンは <span class="num">${i}.${d}m</span> です。何 cm ですか？`,[i*100+d*10],['cm'],`1m=100cm。${i}.${d}×100=${i*100+d*10}cm`,'centi');},
+        ()=>{const v=rand(1,9)*100;return W(`プールのたては <span class="num">${v}cm</span> です。何 m ですか？`,[v/100],['m'],`100cm=1m。${v}÷100=${v/100}m`,'centi');},
+      ],
+      // W2: 同じ単位の計算（換算なし）
+      w2:[
+        ()=>{const a=rand(2,9),b=rand(2,9);return W(`<span class="num">${a}cm</span> のテープと <span class="num">${b}cm</span> のテープをつなげると、何 cm ですか？`,[a+b],['cm'],`${a}+${b}=${a+b}cm`,'centi');},
+        ()=>{const a=rand(5,9)*10,b=rand(2,4)*10;return W(`<span class="num">${a}cm</span> のリボンから <span class="num">${b}cm</span> 切ると、のこりは何 cm ですか？`,[a-b],['cm'],`${a}-${b}=${a-b}cm`,'centi');},
+        ()=>{const a=rand(2,5),n=rand(2,5);return W(`<span class="num">${a}m</span> のロープが <span class="num">${n}本</span> あります。あわせて何 m ですか？`,[a*n],['m'],`${a}×${n}=${a*n}m`,'centi');},
+        ()=>{const a=rand(2,5),b=rand(2,4);return W(`<span class="num">${a}km</span> 走って、さらに <span class="num">${b}km</span> 走りました。あわせて何 km ですか？`,[a+b],['km'],`${a}+${b}=${a+b}km`,'kiro');},
+      ],
+      // W3: 同じ単位の計算 → 換算
+      w3:[
+        ()=>{const a=rand(2,5),b=rand(2,4);return W(`<span class="num">${a}cm</span> と <span class="num">${b}cm</span> のテープをつなげると、何 mm ですか？`,[(a+b)*10],['mm'],`${a}+${b}=${a+b}cm。${a+b}×10=${(a+b)*10}mm`,'centi');},
+        ()=>{const a=rand(2,5),b=rand(2,4);return W(`<span class="num">${a}m</span> と <span class="num">${b}m</span> のロープをつなげると、何 cm ですか？`,[(a+b)*100],['cm'],`${a}+${b}=${a+b}m。${a+b}×100=${(a+b)*100}cm`,'centi');},
+        ()=>{const a=rand(2,4),b=rand(2,4);return W(`<span class="num">${a}km</span> と <span class="num">${b}km</span> 歩きました。あわせて何 m ですか？`,[(a+b)*1000],['m'],`${a}+${b}=${a+b}km。${a+b}×1000=${(a+b)*1000}m`,'kiro');},
+        ()=>{const v=rand(2,5)*100,b=rand(1,4)*100;return W(`<span class="num">${v}cm</span> のテープから <span class="num">${b}cm</span> 切ると、のこりは何 m ですか？`,[(v-b)/100],['m'],`${v}-${b}=${v-b}cm。${v-b}÷100=${(v-b)/100}m`,'centi');},
+      ],
+      // W4: 単位混合の計算（繰り上がり/下がりなし、2マス答え）
+      w4:[
+        // 1m + 50cm = 1m 50cm（足し算、繰上なし）
+        ()=>{const m=rand(1,4),cm=rand(2,8)*10;return W(`<span class="num">${m}m</span> のロープと <span class="num">${cm}cm</span> のロープをつなげると、何 m 何 cm ですか？`,[m,cm],['m','cm'],`${m}m + ${cm}cm = ${m}m ${cm}cm（そのまま並べる）`,'centi');},
+        // 1m 30cm + 2m 40cm = 3m 70cm（cm合計が100未満）
+        ()=>{const m1=rand(1,3),cm1=rand(1,4)*10,m2=rand(1,3),cm2=rand(1,(9-cm1/10))*10;return W(`<span class="num">${m1}m ${cm1}cm</span> と <span class="num">${m2}m ${cm2}cm</span> のテープをつなげると、何 m 何 cm ですか？`,[m1+m2,cm1+cm2],['m','cm'],`${m1+m2}m ${cm1+cm2}cm`,'centi');},
+        // 3m 80cm - 1m 30cm = 2m 50cm（引き算、繰下なし）
+        ()=>{const m1=rand(3,5),cm1=rand(5,9)*10,m2=rand(1,m1-1),cm2=rand(1,cm1/10-1)*10;return W(`<span class="num">${m1}m ${cm1}cm</span> から <span class="num">${m2}m ${cm2}cm</span> 切ると、のこりは何 m 何 cm ですか？`,[m1-m2,cm1-cm2],['m','cm'],`${m1-m2}m ${cm1-cm2}cm`,'centi');},
+        // km m
+        ()=>{const km=rand(1,3),m=rand(1,9)*100;return W(`<span class="num">${km}km</span> と <span class="num">${m}m</span> 歩きました。あわせて何 km 何 m ですか？`,[km,m],['km','m'],`${km}km ${m}m（そのまま並べる）`,'kiro');},
+      ],
+      // W5: 単位混合の計算（繰り上がり/下がりあり、2マス答え）
+      w5:[
+        // 1m 80cm + 50cm = 2m 30cm（繰り上がり）
+        ()=>{const m=rand(1,3),cm1=rand(6,9)*10,cm2=rand(3,9)*10;const total=cm1+cm2;return W(`<span class="num">${m}m ${cm1}cm</span> と <span class="num">${cm2}cm</span> をあわせると、何 m 何 cm ですか？`,[m+Math.floor(total/100),total%100],['m','cm'],`${cm1}+${cm2}=${total}cm。${m}m+${total}cm=${m+Math.floor(total/100)}m${total%100}cm`,'centi');},
+        // 3m - 50cm = 2m 50cm（繰り下がり）
+        ()=>{const m=rand(2,4),cm=rand(2,7)*10;return W(`<span class="num">${m}m</span> から <span class="num">${cm}cm</span> 切ると、のこりは何 m 何 cm ですか？`,[m-1,100-cm],['m','cm'],`${m}m=${m-1}m100cm。100-${cm}=${100-cm}cm。のこり ${m-1}m ${100-cm}cm`,'centi');},
+        // 2km - 300m = 1km 700m（繰り下がり）
+        ()=>{const km=rand(2,4),m=rand(2,7)*100;return W(`<span class="num">${km}km</span> から <span class="num">${m}m</span> 歩いてもどると、のこりは何 km 何 m ですか？`,[km-1,1000-m],['km','m'],`${km}km=${km-1}km1000m。1000-${m}=${1000-m}m。のこり ${km-1}km ${1000-m}m`,'kiro');},
+        // 800m + 500m = 1km 300m（繰り上がり）
+        ()=>{const m1=rand(6,9)*100,m2=rand(3,9)*100;const total=m1+m2;return W(`<span class="num">${m1}m</span> と <span class="num">${m2}m</span> 歩きました。あわせて何 km 何 m ですか？`,[Math.floor(total/1000),total%1000],['km','m'],`${m1}+${m2}=${total}m=${Math.floor(total/1000)}km${total%1000}m`,'kiro');},
+      ],
+      // W6: 単位混合 → 1つの単位に換算（1マス答え、小数）
+      w6:[
+        ()=>{const m=rand(1,3),cm=rand(2,5)*10;return W(`<span class="num">${m}m</span> のロープと <span class="num">${cm}cm</span> のロープをつなげると、何 m ですか？`,[(m*100+cm)/100],['m'],`${m}m=${m*100}cm。${m*100}+${cm}=${m*100+cm}cm=${(m*100+cm)/100}m`,'centi');},
+        ()=>{const km=rand(1,2),m=rand(2,5)*100;return W(`<span class="num">${km}km</span> と <span class="num">${m}m</span> 歩きました。あわせて何 km ですか？`,[(km*1000+m)/1000],['km'],`${km}km=${km*1000}m。${km*1000}+${m}=${km*1000+m}m=${(km*1000+m)/1000}km`,'kiro');},
+        ()=>{const m=rand(2,4),cm=rand(2,5)*10;return W(`<span class="num">${m}m</span> のテープから <span class="num">${cm}cm</span> 切ると、のこりは何 m ですか？`,[(m*100-cm)/100],['m'],`${m}m=${m*100}cm。${m*100}-${cm}=${m*100-cm}cm=${(m*100-cm)/100}m`,'centi');},
+      ],
+    },
+    // ===== かさ =====
+    volume:{
+      w1:[
+        ()=>{const v=rand(2,5);return W(`ジュースが <span class="num">${v}L</span> あります。何 mL ですか？`,[v*1000],['mL'],`1L=1000mL。${v}×1000=${v*1000}mL`,'kiro');},
+        ()=>{const v=rand(2,8);return W(`お茶が <span class="num">${v}L</span> あります。何 dL ですか？`,[v*10],['dL'],`1L=10dL。${v}×10=${v*10}dL`,'mili');},
+        ()=>{const v=rand(2,9);return W(`ぎゅうにゅうが <span class="num">${v}dL</span> あります。何 mL ですか？`,[v*100],['mL'],`1dL=100mL。${v}×100=${v*100}mL`,'mili');},
+        ()=>{const i=rand(1,3),d=rand(1,9);return W(`水とうに <span class="num">${i}.${d}L</span> のお茶が入っています。何 mL ですか？`,[i*1000+d*100],['mL'],`1L=1000mL。${i}.${d}×1000=${i*1000+d*100}mL`,'kiro');},
+        ()=>{const v=rand(2,9)*100;return W(`ペットボトルに <span class="num">${v}mL</span> 入っています。何 L ですか？`,[v/1000],['L'],`1000mL=1L。${v}÷1000=${v/1000}L`,'kiro');},
+      ],
+      w2:[
+        ()=>{const a=rand(2,5),b=rand(2,4);return W(`<span class="num">${a}L</span> と <span class="num">${b}L</span> の水を入れました。あわせて何 L ですか？`,[a+b],['L'],`${a}+${b}=${a+b}L`,'mili');},
+        ()=>{const a=rand(5,9),b=rand(2,4);return W(`<span class="num">${a}dL</span> から <span class="num">${b}dL</span> 飲みました。のこりは何 dL ですか？`,[a-b],['dL'],`${a}-${b}=${a-b}dL`,'mili');},
+        ()=>{const a=rand(2,5)*100,n=rand(2,4);return W(`<span class="num">${a}mL</span> のジュースが <span class="num">${n}本</span> あります。あわせて何 mL ですか？`,[a*n],['mL'],`${a}×${n}=${a*n}mL`,'mili');},
+      ],
+      w3:[
+        ()=>{const a=rand(2,4),b=rand(2,4);return W(`<span class="num">${a}L</span> と <span class="num">${b}L</span> をまぜました。あわせて何 mL ですか？`,[(a+b)*1000],['mL'],`${a}+${b}=${a+b}L。${a+b}×1000=${(a+b)*1000}mL`,'kiro');},
+        ()=>{const a=rand(2,5),b=rand(2,4);return W(`<span class="num">${a}L</span> と <span class="num">${b}L</span> をあわせます。何 dL ですか？`,[(a+b)*10],['dL'],`${a}+${b}=${a+b}L。${a+b}×10=${(a+b)*10}dL`,'mili');},
+        ()=>{const v=rand(15,25)*100,b=rand(2,5)*100;return W(`<span class="num">${v}mL</span> から <span class="num">${b}mL</span> 飲みました。のこりは何 L ですか？`,[(v-b)/1000],['L'],`${v}-${b}=${v-b}mL=${(v-b)/1000}L`,'kiro');},
+      ],
+      // W4: 単位混合（繰り上がりなし、2マス）
+      w4:[
+        // 1L 3dL + 2L 4dL = 3L 7dL（dL合計<10）
+        ()=>{const L1=rand(1,3),dL1=rand(1,4),L2=rand(1,3),dL2=rand(1,9-dL1);return W(`<span class="num">${L1}L ${dL1}dL</span> と <span class="num">${L2}L ${dL2}dL</span> をあわせると、何 L 何 dL ですか？`,[L1+L2,dL1+dL2],['L','dL'],`${L1+L2}L ${dL1+dL2}dL`,'mili');},
+        // 1L + 3dL = 1L 3dL
+        ()=>{const L=rand(1,4),dL=rand(2,9);return W(`<span class="num">${L}L</span> と <span class="num">${dL}dL</span> のお茶をあわせると、何 L 何 dL ですか？`,[L,dL],['L','dL'],`${L}L ${dL}dL（そのまま並べる）`,'mili');},
+        // 3L 8dL - 1L 3dL = 2L 5dL（繰り下がりなし）
+        ()=>{const L1=rand(3,5),dL1=rand(5,9),L2=rand(1,L1-1),dL2=rand(1,dL1-1);return W(`<span class="num">${L1}L ${dL1}dL</span> から <span class="num">${L2}L ${dL2}dL</span> 飲むと、のこりは何 L 何 dL ですか？`,[L1-L2,dL1-dL2],['L','dL'],`${L1-L2}L ${dL1-dL2}dL`,'mili');},
+      ],
+      // W5: 単位混合（繰り上がり/下がりあり、2マス）
+      w5:[
+        // 2L - 300mL = 1L 700mL
+        ()=>{const L=rand(2,4),mL=rand(2,7)*100;return W(`<span class="num">${L}L</span> から <span class="num">${mL}mL</span> 飲みました。のこりは何 L 何 mL ですか？`,[L-1,1000-mL],['L','mL'],`${L}L=${L-1}L1000mL。1000-${mL}=${1000-mL}mL。のこり ${L-1}L ${1000-mL}mL`,'kiro');},
+        // 1L 8dL + 5dL = 2L 3dL（dL繰上）
+        ()=>{const L=rand(1,3),dL1=rand(6,9),dL2=rand(3,9);const total=dL1+dL2;return W(`<span class="num">${L}L ${dL1}dL</span> と <span class="num">${dL2}dL</span> をあわせると、何 L 何 dL ですか？`,[L+Math.floor(total/10),total%10],['L','dL'],`${dL1}+${dL2}=${total}dL。${L}L+${total}dL=${L+Math.floor(total/10)}L${total%10}dL`,'mili');},
+        // 3L - 4dL = 2L 6dL（繰り下がり）
+        ()=>{const L=rand(2,4),dL=rand(2,8);return W(`<span class="num">${L}L</span> から <span class="num">${dL}dL</span> 飲むと、のこりは何 L 何 dL ですか？`,[L-1,10-dL],['L','dL'],`${L}L=${L-1}L10dL。10-${dL}=${10-dL}dL。のこり ${L-1}L ${10-dL}dL`,'mili');},
+      ],
+      // W6: 単位混合 → 1つの単位（小数）
+      w6:[
+        ()=>{const L=rand(1,3),mL=rand(2,5)*100;return W(`<span class="num">${L}L</span> から <span class="num">${mL}mL</span> 飲みました。のこりは何 L ですか？`,[(L*1000-mL)/1000],['L'],`${L}L=${L*1000}mL。${L*1000}-${mL}=${L*1000-mL}mL=${(L*1000-mL)/1000}L`,'kiro');},
+        ()=>{const L=rand(1,2),dL=rand(2,8);return W(`<span class="num">${L}L</span> と <span class="num">${dL}dL</span> のお茶をあわせると、何 L ですか？`,[(L*10+dL)/10],['L'],`${L}L=${L*10}dL。${L*10}+${dL}=${L*10+dL}dL=${(L*10+dL)/10}L`,'mili');},
+      ],
+    },
+    // ===== おもさ =====
+    weight:{
+      w1:[
+        ()=>{const v=rand(2,9);return W(`お米が <span class="num">${v}kg</span> あります。何 g ですか？`,[v*1000],['g'],`1kg=1000g。${v}×1000=${v*1000}g`,'kiro');},
+        ()=>{const v=rand(2,9)*1000;return W(`スイカが <span class="num">${v}g</span> あります。何 kg ですか？`,[v/1000],['kg'],`1000g=1kg。${v}÷1000=${v/1000}kg`,'kiro');},
+        ()=>{const v=rand(2,5);return W(`トラックは <span class="num">${v}t</span> はこびます。何 kg ですか？`,[v*1000],['kg'],`1t=1000kg。${v}×1000=${v*1000}kg`,'kiro');},
+        ()=>{const i=rand(1,5),d=rand(1,9);return W(`さとうが <span class="num">${i}.${d}kg</span> あります。何 g ですか？`,[i*1000+d*100],['g'],`1kg=1000g。${i}.${d}×1000=${i*1000+d*100}g`,'kiro');},
+      ],
+      w2:[
+        ()=>{const a=rand(2,5),b=rand(2,4);return W(`<span class="num">${a}kg</span> と <span class="num">${b}kg</span> のお米があります。あわせて何 kg ですか？`,[a+b],['kg'],`${a}+${b}=${a+b}kg`,'kiro');},
+        ()=>{const a=rand(5,9)*100,b=rand(2,4)*100;return W(`<span class="num">${a}g</span> から <span class="num">${b}g</span> 使うと、のこりは何 g ですか？`,[a-b],['g'],`${a}-${b}=${a-b}g`,'kiro');},
+        ()=>{const a=rand(2,4)*100,n=rand(2,4);return W(`<span class="num">${a}g</span> のおかしが <span class="num">${n}ふくろ</span> あります。あわせて何 g ですか？`,[a*n],['g'],`${a}×${n}=${a*n}g`,'kiro');},
+      ],
+      w3:[
+        ()=>{const a=rand(2,4),b=rand(2,4);return W(`<span class="num">${a}kg</span> と <span class="num">${b}kg</span> のお米をあわせます。何 g ですか？`,[(a+b)*1000],['g'],`${a}+${b}=${a+b}kg。${a+b}×1000=${(a+b)*1000}g`,'kiro');},
+        ()=>{const a=rand(3,6)*100,b=rand(2,4)*100;return W(`<span class="num">${a}g</span> と <span class="num">${b}g</span> のおかしをあわせると、何 kg ですか？`,[(a+b)/1000],['kg'],`${a}+${b}=${a+b}g=${(a+b)/1000}kg`,'kiro');},
+        ()=>{const a=rand(2,4),b=rand(1,3);return W(`<span class="num">${a}t</span> から <span class="num">${b}t</span> おろしました。のこりは何 kg ですか？`,[(a-b)*1000],['kg'],`${a}-${b}=${a-b}t。${a-b}×1000=${(a-b)*1000}kg`,'kiro');},
+      ],
+      // W4: 単位混合（繰り上がりなし、2マス）
+      w4:[
+        // 1kg + 200g = 1kg 200g
+        ()=>{const kg=rand(1,4),g=rand(2,8)*100;return W(`<span class="num">${kg}kg</span> と <span class="num">${g}g</span> のお米をあわせると、何 kg 何 g ですか？`,[kg,g],['kg','g'],`${kg}kg ${g}g（そのまま並べる）`,'kiro');},
+        // 1kg 300g + 2kg 200g = 3kg 500g
+        ()=>{const kg1=rand(1,3),g1=rand(1,4)*100,kg2=rand(1,3),g2=rand(1,(9-g1/100))*100;return W(`<span class="num">${kg1}kg ${g1}g</span> と <span class="num">${kg2}kg ${g2}g</span> のお米をあわせると、何 kg 何 g ですか？`,[kg1+kg2,g1+g2],['kg','g'],`${kg1+kg2}kg ${g1+g2}g`,'kiro');},
+        // 3kg 800g - 1kg 300g = 2kg 500g（繰下なし）
+        ()=>{const kg1=rand(3,5),g1=rand(5,9)*100,kg2=rand(1,kg1-1),g2=rand(1,g1/100-1)*100;return W(`<span class="num">${kg1}kg ${g1}g</span> から <span class="num">${kg2}kg ${g2}g</span> 使うと、のこりは何 kg 何 g ですか？`,[kg1-kg2,g1-g2],['kg','g'],`${kg1-kg2}kg ${g1-g2}g`,'kiro');},
+        // t + kg
+        ()=>{const t=rand(1,3),kg=rand(1,9)*100;return W(`<span class="num">${t}t</span> と <span class="num">${kg}kg</span> のにもつ。あわせて何 t 何 kg ですか？`,[t,kg],['t','kg'],`${t}t ${kg}kg（そのまま並べる）`,'kiro');},
+      ],
+      // W5: 単位混合（繰り上がり/下がりあり、2マス）
+      w5:[
+        // 2kg - 300g = 1kg 700g（繰り下がり）
+        ()=>{const kg=rand(2,4),g=rand(2,7)*100;return W(`<span class="num">${kg}kg</span> から <span class="num">${g}g</span> 使うと、のこりは何 kg 何 g ですか？`,[kg-1,1000-g],['kg','g'],`${kg}kg=${kg-1}kg1000g。1000-${g}=${1000-g}g。のこり ${kg-1}kg ${1000-g}g`,'kiro');},
+        // 800g + 500g = 1kg 300g（繰り上がり）
+        ()=>{const g1=rand(6,9)*100,g2=rand(3,9)*100;const total=g1+g2;return W(`<span class="num">${g1}g</span> と <span class="num">${g2}g</span> のおかしをあわせると、何 kg 何 g ですか？`,[Math.floor(total/1000),total%1000],['kg','g'],`${g1}+${g2}=${total}g=${Math.floor(total/1000)}kg${total%1000}g`,'kiro');},
+        // 1kg 800g + 500g = 2kg 300g（繰り上がり）
+        ()=>{const kg=rand(1,2),g1=rand(6,9)*100,g2=rand(3,9)*100;const total=g1+g2;return W(`<span class="num">${kg}kg ${g1}g</span> と <span class="num">${g2}g</span> のお米をあわせると、何 kg 何 g ですか？`,[kg+Math.floor(total/1000),total%1000],['kg','g'],`${g1}+${g2}=${total}g。${kg}kg+${total}g=${kg+Math.floor(total/1000)}kg${total%1000}g`,'kiro');},
+      ],
+      // W6: 単位混合 → 1つの単位（小数）
+      w6:[
+        ()=>{const kg=rand(1,3),g=rand(2,5)*100;return W(`<span class="num">${kg}kg</span> と <span class="num">${g}g</span> のお米をあわせると、何 kg ですか？`,[(kg*1000+g)/1000],['kg'],`${kg}kg=${kg*1000}g。${kg*1000}+${g}=${kg*1000+g}g=${(kg*1000+g)/1000}kg`,'kiro');},
+        ()=>{const kg=rand(1,2),g=rand(2,5)*100;return W(`<span class="num">${kg}kg</span> から <span class="num">${g}g</span> 使いました。のこりは何 kg ですか？`,[(kg*1000-g)/1000],['kg'],`${kg}kg=${kg*1000}g。${kg*1000}-${g}=${kg*1000-g}g=${(kg*1000-g)/1000}kg`,'kiro');},
+      ],
+    },
+    // ===== めんせき =====
+    area:{
+      w1:[
+        ()=>{const a=rand(2,8);return W(`1辺が <span class="num">${a}m</span> の正方形の${pick(ITEMS.area)}があります。面積は何 m² ですか？`,[a*a],['m²'],`${a}×${a}=${a*a}m²`,'centi');},
+        ()=>{const v=rand(2,5);return W(`<span class="num">${v}m²</span> の花だんがあります。何 cm² ですか？`,[v*10000],['cm²'],`1m²=10000cm²。${v}×10000=${fmt(v*10000)}cm²`,'centi');},
+        ()=>{const v=rand(2,5);return W(`<span class="num">${v}a</span> の畑があります。何 m² ですか？`,[v*100],['m²'],`1a=100m²。${v}×100=${v*100}m²`,'centi');},
+        ()=>{const v=rand(2,5);return W(`<span class="num">${v}ha</span> の広場があります。何 a ですか？`,[v*100],['a'],`1ha=100a。${v}×100=${v*100}a`,'centi');},
+      ],
+      w2:[
+        ()=>{const a=rand(2,5),b=rand(2,4);return W(`<span class="num">${a}m²</span> と <span class="num">${b}m²</span> の花だんがあります。あわせて何 m² ですか？`,[a+b],['m²'],`${a}+${b}=${a+b}m²`,'centi');},
+        ()=>{const a=rand(2,5),b=rand(2,4);return W(`<span class="num">${a}a</span> と <span class="num">${b}a</span> の畑をあわせて何 a ですか？`,[a+b],['a'],`${a}+${b}=${a+b}a`,'centi');},
+        ()=>{const a=rand(2,5),b=rand(2,5);return W(`たて <span class="num">${a}m</span>、よこ <span class="num">${b}m</span> の長方形があります。面積は何 m² ですか？`,[a*b],['m²'],`${a}×${b}=${a*b}m²`,'centi');},
+      ],
+      w3:[
+        ()=>{const a=rand(2,3),b=rand(2,3);return W(`<span class="num">${a}m²</span> と <span class="num">${b}m²</span> をあわせて、何 cm² ですか？`,[(a+b)*10000],['cm²'],`${a}+${b}=${a+b}m²。${a+b}×10000=${fmt((a+b)*10000)}cm²`,'centi');},
+        ()=>{const a=rand(2,4),b=rand(2,3);return W(`<span class="num">${a}a</span> と <span class="num">${b}a</span> の畑をあわせて、何 m² ですか？`,[(a+b)*100],['m²'],`${a}+${b}=${a+b}a。${a+b}×100=${(a+b)*100}m²`,'centi');},
+      ],
+    },
+    // ===== たいせき =====
+    cubic:{
+      w1:[
+        ()=>{const a=rand(2,5);return W(`1辺が <span class="num">${a}m</span> の立方体の${pick(ITEMS.cubic)}があります。体積は何 m³ ですか？`,[a*a*a],['m³'],`${a}×${a}×${a}=${a*a*a}m³`,'centi');},
+        ()=>{const v=rand(2,5);return W(`<span class="num">${v}m³</span> の${pick(ITEMS.cubic)}があります。何 cm³ ですか？`,[v*1000000],['cm³'],`1m³=1,000,000cm³。${v}×1000000=${fmt(v*1000000)}cm³`,'centi');},
+        ()=>{const a=rand(2,5),b=rand(2,5),c=rand(2,5);return W(`たて <span class="num">${a}m</span>、よこ <span class="num">${b}m</span>、たかさ <span class="num">${c}m</span> の${pick(ITEMS.cubic)}の体積は何 m³ ですか？`,[a*b*c],['m³'],`${a}×${b}×${c}=${a*b*c}m³`,'centi');},
+      ],
+      w2:[
+        ()=>{const a=rand(2,5),b=rand(2,4);return W(`<span class="num">${a}m³</span> と <span class="num">${b}m³</span> の水。あわせて何 m³ ですか？`,[a+b],['m³'],`${a}+${b}=${a+b}m³`,'centi');},
+      ],
+      w3:[
+        ()=>{const a=rand(1,3),b=rand(1,2);return W(`<span class="num">${a}m³</span> と <span class="num">${b}m³</span> の水。あわせて何 cm³ ですか？`,[(a+b)*1000000],['cm³'],`${a}+${b}=${a+b}m³。${a+b}×1000000=${fmt((a+b)*1000000)}cm³`,'centi');},
+      ],
+    }
+  }
+};
+
+// ============================================================
+// 状態
+// ============================================================
+let state={mode:'intro',category:'length',level:'i0',count:10,current:0,score:0,problem:null,startTime:0,answered:false};
+
+function findLevelMeta(modeKey,levelKey){
+  for(const stage of LEVELS[modeKey]) for(const it of stage.items) if(it.key===levelKey) return it;
+  return null;
+}
+
+function renderLevelGrid(){
+  const c=document.getElementById('level-container');
+  c.innerHTML='';
+  const stages=LEVELS[state.mode]||[];
+  let firstAvail=null,currentValid=false;
+  for(const stage of stages){
+    const validItems=stage.items.filter(it=>it.cats.includes(state.category)&&hasTemplate(state.mode,state.category,it.key));
+    if(validItems.length===0) continue;
+    if(stage.name){
+      const h=document.createElement('div');h.className='stage-header';h.textContent=stage.name;c.appendChild(h);
+    }
+    const grid=document.createElement('div');
+    grid.className='choice-grid'+(validItems.length===1?' choice-grid--solo':'');
+    for(const it of validItems){
+      const btn=document.createElement('button');
+      btn.className='choice';
+      btn.dataset.level=it.key;
+      btn.innerHTML=`<span class="choice__stars">${it.stars}</span>${it.label}<span class="choice__example">${it.example}</span>`;
+      btn.addEventListener('click',()=>{
+        document.querySelectorAll('#level-container .choice').forEach(b=>b.classList.remove('is-selected'));
+        btn.classList.add('is-selected');
+        state.level=it.key;
+      });
+      if(it.key===state.level){btn.classList.add('is-selected');currentValid=true;}
+      if(!firstAvail) firstAvail=it;
+      grid.appendChild(btn);
+    }
+    c.appendChild(grid);
+  }
+  if(!currentValid&&firstAvail){
+    state.level=firstAvail.key;
+    c.querySelector(`[data-level="${firstAvail.key}"]`)?.classList.add('is-selected');
+  }
+}
+
+function hasTemplate(mode,cat,levelKey){
+  if(cat==='mixed'){
+    for(const c of ['length','volume','weight','area','cubic']) if(T[mode]?.[c]?.[levelKey]) return true;
+    return false;
+  }
+  return !!T[mode]?.[cat]?.[levelKey];
+}
+
+function generateProblem(){
+  if(state.mode==='intro'&&state.level==='i0'){
+    return TUTORIAL[state.current%TUTORIAL.length]();
+  }
+  let cat=state.category;
+  if(cat==='mixed'){
+    const candidates=['length','volume','weight','area','cubic'].filter(c=>T[state.mode][c]?.[state.level]);
+    cat=pick(candidates);
+  }
+  return pick(T[state.mode][cat][state.level])();
+}
+
+// ============================================================
+// モーダル選択フロー
+// ============================================================
+const CATEGORIES=[
+  {key:'length',icon:'📏',label:'ながさ',sub:'mm・cm・m・km'},
+  {key:'volume',icon:'🥛',label:'かさ',sub:'mL・dL・L'},
+  {key:'weight',icon:'⚖️',label:'おもさ',sub:'g・kg・t'},
+  {key:'area',icon:'🟦',label:'めんせき',sub:'cm²・m²・a・ha'},
+  {key:'cubic',icon:'🧊',label:'たいせき',sub:'cm³・m³'},
+  {key:'mixed',icon:'🎲',label:'ミックス',sub:'ぜんぶランダム'},
+];
+const MODES=[
+  {key:'drill',icon:'📝',label:'単位ドリル',sub:'けいさんで練習'},
+  {key:'word',icon:'📖',label:'文章題',sub:'おはなしで練習'},
+];
+let modalStage=0;
+
+function openModal(stage){
+  modalStage=stage;
+  document.getElementById('modal-overlay').classList.remove('hidden');
+  document.getElementById('modal-step').textContent=`STEP ${stage} / 3`;
+  document.getElementById('modal-back').classList.toggle('hidden',stage===1);
+  if(stage===1) renderCategoryModal();
+  else if(stage===2) renderModeModal();
+  else if(stage===3) renderLevelModal();
+}
+function closeModal(){
+  modalStage=0;
+  document.getElementById('modal-overlay').classList.add('hidden');
+}
+
+function renderCategoryModal(){
+  document.getElementById('modal-title').textContent='① カテゴリをえらぶ';
+  const body=document.getElementById('modal-body');
+  body.className='modal__body modal-grid-2';
+  body.innerHTML='';
+  CATEGORIES.forEach(c=>{
+    const btn=document.createElement('button');
+    btn.className='choice';
+    btn.innerHTML=`<span class="choice__icon">${c.icon}</span>${c.label}<span class="choice__sub">${c.sub}</span>`;
+    btn.onclick=()=>{state.category=c.key;openModal(2);};
+    body.appendChild(btn);
+  });
+}
+
+function renderModeModal(){
+  document.getElementById('modal-title').textContent='② もんだいタイプ';
+  const body=document.getElementById('modal-body');
+  body.className='modal__body modal-grid-2';
+  body.innerHTML='';
+  MODES.forEach(m=>{
+    const btn=document.createElement('button');
+    btn.className='choice';
+    btn.innerHTML=`<span class="choice__icon">${m.icon}</span>${m.label}<span class="choice__sub">${m.sub}</span>`;
+    btn.onclick=()=>{state.mode=m.key;openModal(3);};
+    body.appendChild(btn);
+  });
+}
+
+function renderLevelModal(){
+  document.getElementById('modal-title').textContent='③ レベルをえらぶ';
+  const body=document.getElementById('modal-body');
+  body.className='modal__body';
+  body.innerHTML='';
+  const stages=LEVELS[state.mode]||[];
+  let any=false;
+  for(const stage of stages){
+    const validItems=stage.items.filter(it=>it.cats.includes(state.category)&&hasTemplate(state.mode,state.category,it.key));
+    if(validItems.length===0) continue;
+    any=true;
+    if(stage.name){
+      const h=document.createElement('div');h.className='stage-header';h.textContent=stage.name;body.appendChild(h);
+    }
+    const grid=document.createElement('div');
+    grid.className='choice-grid'+(validItems.length===1?' choice-grid--solo':'');
+    for(const it of validItems){
+      const btn=document.createElement('button');
+      btn.className='choice';
+      btn.innerHTML=`<span class="choice__stars">${it.stars}</span>${it.label}<span class="choice__example">${it.example}</span>`;
+      btn.onclick=()=>{state.level=it.key;closeModal();startQuiz();};
+      grid.appendChild(btn);
+    }
+    body.appendChild(grid);
+  }
+  if(!any){
+    body.innerHTML='<p style="text-align:center;padding:20px;color:var(--ink-soft);">このカテゴリで使えるレベルがありません</p>';
+  }
+}
+
+document.getElementById('modal-back').addEventListener('click',()=>{
+  if(modalStage>1) openModal(modalStage-1);
+});
+document.getElementById('modal-close').addEventListener('click',closeModal);
+document.getElementById('modal-overlay').addEventListener('click',(e)=>{
+  if(e.target.id==='modal-overlay') closeModal();
+});
+
+// ホーム2ボタン
+document.getElementById('goto-intro-btn').addEventListener('click',()=>{
+  state.mode='intro';state.category='length';state.level='i0';
+  startQuiz();
+});
+document.getElementById('goto-start-btn').addEventListener('click',()=>{
+  openModal(1);
+});
+
+function startQuiz(){
+  state.current=0;state.score=0;state.startTime=Date.now();
+  state.count=10;
+  if(state.mode==='intro'&&state.level==='i0') state.count=TUTORIAL.length;
+  showScreen('quiz');loadProblem();
+}
+
+function showScreen(name){
+  ['start','quiz','result'].forEach(s=>{
+    document.getElementById(`screen-${s}`).classList.toggle('hidden',s!==name);
+  });
+}
+
+function loadProblem(){
+  state.problem=generateProblem();
+  state.answered=false;
+
+  document.getElementById('mode-badge').textContent=state.mode==='drill'?'DRILL':state.mode==='word'?'STORY':'INTRO';
+  const meta=findLevelMeta(state.mode,state.level);
+  document.getElementById('lv-badge').textContent=meta?meta.stars.replace('STAGE ','').replace('LEVEL ','').replace('INTRO ','').replace('TUTORIAL','TUT'):state.level;
+  document.getElementById('progress-text').textContent=`${state.current+1}/${state.count}`;
+  document.getElementById('score-text').textContent=state.score;
+  document.getElementById('progress-fill').style.width=`${(state.current/state.count)*100}%`;
+
+  const charMap={kiro:'👑',mili:'🧚',centi:'🐢'};
+  const c=state.problem.character;
+  const charBubble=document.querySelector('.character-bubble');
+  // 入門モードのスライドと練習はキャラクターヒントを表示しない
+  if(state.mode==='intro'||!c){
+    charBubble.classList.add('hidden');
+  }else{
+    charBubble.classList.remove('hidden');
+    const charEl=document.getElementById('character-icon');
+    charEl.textContent=charMap[c]||'';
+    charEl.className='character '+(c==='mili'?'--mili':c==='centi'?'--centi':'');
+    document.getElementById('character-line').textContent='いっしょに がんばろう！';
+  }
+
+  // 問題カードのラベル変更（slideは「まなぶ」）
+  const qCard=document.getElementById('question-card');
+  qCard.classList.toggle('question-card--slide',state.problem.type==='slide');
+
+  const qEl=document.getElementById('question-text');
+  qEl.innerHTML=state.problem.question;
+  qEl.className=state.problem.type==='drill'?'question-text question-text--drill':'question-text';
+
+  // チュートリアル(slide)は入力エリアを隠す
+  const isSlide=state.problem.type==='slide';
+  document.getElementById('answer-area').classList.toggle('hidden',isSlide);
+
+  if(!isSlide){
+    const expectsDecimal=state.problem.answer.values.some(v=>v%1!==0);
+    const im=expectsDecimal?'decimal':'numeric';
+    const row=document.getElementById('answer-row');
+    row.innerHTML='';
+    state.problem.answer.units.forEach((unit,i)=>{
+      const group=document.createElement('div');
+      group.className='input-group';
+      group.innerHTML=`<input type="number" class="num-input" data-idx="${i}" inputmode="${im}" step="any" /><span class="unit-label">${unit}</span>`;
+      row.appendChild(group);
+    });
+    setTimeout(()=>row.querySelector('.num-input')?.focus(),100);
+  }
+
+  document.getElementById('feedback-area').innerHTML='';
+
+  // ボタン制御：slideのときは「もどる/つぎへ」と音声ボタン
+  if(isSlide){
+    document.getElementById('submit-btn').classList.add('hidden');
+    document.getElementById('next-btn').classList.remove('hidden');
+    document.getElementById('next-btn').textContent=state.current+1>=state.count?'🎓 入門おわり！':'つぎへ →';
+    // もどるボタン（最初のスライド以外）
+    const backBtn=document.getElementById('back-btn');
+    if(state.current>0) backBtn.classList.remove('hidden');
+    else backBtn.classList.add('hidden');
+    // 音声ボタンと自動再生
+    if(state.problem.narration){
+      const fa=document.getElementById('feedback-area');
+      fa.innerHTML=`<div class="audio-btn-row">
+        <button class="audio-btn" id="replay-btn" type="button">🔊 もういちど きく</button>
+        <button class="audio-btn audio-btn--toggle ${audioEnabled?'':'is-off'}" id="audio-toggle-btn" type="button">${audioEnabled?'🔉 音オン':'🔇 音オフ'}</button>
+      </div>`;
+      const playSlide=()=>{
+        speak(state.problem.narration);
+        runAnimations(state.problem.animations);
+      };
+      document.getElementById('replay-btn').onclick=playSlide;
+      document.getElementById('audio-toggle-btn').onclick=()=>{
+        audioEnabled=!audioEnabled;
+        if(!audioEnabled) stopSpeak();
+        const t=document.getElementById('audio-toggle-btn');
+        t.textContent=audioEnabled?'🔉 音オン':'🔇 音オフ';
+        t.classList.toggle('is-off',!audioEnabled);
+        // 音オフ→オンの場合は音声＋アニメ両方再生
+        // 音オフのままでも、ボタン押下時はアニメだけ走るのが自然なので
+        playSlide();
+      };
+      // 自動再生（少し遅らせる）— 音声OFFでもアニメは進む
+      setTimeout(playSlide,500);
+    }else if(state.problem.animations&&state.problem.animations.length>0){
+      // narrationなしでもanimationsだけ実行
+      setTimeout(()=>runAnimations(state.problem.animations),500);
+    }
+  }else{
+    document.getElementById('submit-btn').classList.remove('hidden');
+    document.getElementById('next-btn').classList.add('hidden');
+    document.getElementById('back-btn').classList.add('hidden');
+  }
+  // post-rowの空判定（両方hiddenなら非表示）
+  const pr=document.getElementById('post-row');
+  const bothHidden=document.getElementById('back-btn').classList.contains('hidden')&&document.getElementById('next-btn').classList.contains('hidden');
+  pr.classList.toggle('is-empty',bothHidden);
+}
+
+function submitAnswer(){
+  if(state.answered) return;
+  if(state.problem.type==='slide'){
+    advanceProblem();
+    return;
+  }
+  const inputs=document.querySelectorAll('.num-input');
+  const userValues=Array.from(inputs).map(i=>i.value===''?null:Number(i.value));
+  if(userValues.some(v=>v===null||isNaN(v))){
+    inputs.forEach(i=>{if(i.value==='') i.style.background='#FFE3DC';});
+    return;
+  }
+  state.answered=true;
+  const correct=state.problem.answer.values;
+  const isCorrect=userValues.every((v,i)=>eq(v,correct[i]));
+  if(isCorrect) state.score++;
+
+  const fb=document.getElementById('feedback-area');
+  const correctStr=correct.map((v,i)=>`${typeof v==='number'?(v%1===0?fmt(v):v):v}${state.problem.answer.units[i]}`).join(' ');
+  fb.innerHTML=`<div class="feedback feedback--${isCorrect?'correct':'wrong'}"><div class="feedback__title">${isCorrect?'⭕ せいかい！':'❌ ざんねん！'}</div><div class="feedback__answer">こたえ：${correctStr}</div><div class="feedback__explain">💡 ${state.problem.explanation}</div></div>`;
+  document.getElementById('submit-btn').classList.add('hidden');
+  document.getElementById('next-btn').classList.remove('hidden');
+  document.getElementById('next-btn').textContent=state.current+1>=state.count?'🏆 けっか発表！':'つぎの問題 →';
+  document.getElementById('post-row').classList.remove('is-empty');
+}
+
+function advanceProblem(){
+  stopSpeak();clearAnimTimers();
+  state.current++;
+  if(state.current>=state.count) showResult();
+  else loadProblem();
+}
+
+function goBack(){
+  stopSpeak();clearAnimTimers();
+  if(state.current>0){
+    state.current--;
+    loadProblem();
+  }
+}
+
+document.getElementById('submit-btn').addEventListener('click',submitAnswer);
+document.getElementById('next-btn').addEventListener('click',advanceProblem);
+document.getElementById('back-btn').addEventListener('click',goBack);
+document.getElementById('quit-btn').addEventListener('click',()=>{
+  if(confirm('ホームにもどりますか？（とちゅうの結果は消えます）')){stopSpeak();clearAnimTimers();showScreen('start');}
+});
+document.addEventListener('keydown',e=>{
+  if(e.key==='Enter'&&!document.getElementById('screen-quiz').classList.contains('hidden')){
+    if(state.problem?.type==='slide'){advanceProblem();return;}
+    if(state.answered) advanceProblem();
+    else submitAnswer();
+  }
+});
+
+function showResult(){
+  showScreen('result');
+  const isTutorial=state.mode==='intro'&&state.level==='i0';
+  const time=Math.round((Date.now()-state.startTime)/1000);
+
+  if(isTutorial){
+    document.getElementById('result-medal').textContent='🎓';
+    document.getElementById('result-title').textContent='入門おわり！';
+    document.getElementById('result-rank').textContent='たんいマスター見習い';
+    // チュートリアルは正答率の代わりに完了表示
+    document.getElementById('result-stats').innerHTML=`
+      <div class="stat" style="grid-column:1/-1;"><div class="stat__num">📖</div><div class="stat__label">単位ボックスのしくみ、おぼえたね！</div></div>
+      <div class="stat" style="grid-column:1/-1;"><div class="stat__num">${time}</div><div class="stat__label">じかん（秒）</div></div>`;
+    return;
+  }
+
+  // ノーマル結果
+  document.getElementById('result-stats').innerHTML=`
+    <div class="stat"><div class="stat__num" id="stat-correct">${state.score}</div><div class="stat__label">せいかい</div></div>
+    <div class="stat"><div class="stat__num" id="stat-total">${state.count}</div><div class="stat__label">もんだい数</div></div>
+    <div class="stat"><div class="stat__num" id="stat-rate">${Math.round((state.score/state.count)*100)}%</div><div class="stat__label">せいかいりつ</div></div>
+    <div class="stat"><div class="stat__num" id="stat-time">${time}</div><div class="stat__label">じかん（秒）</div></div>`;
+
+  const rate=Math.round((state.score/state.count)*100);
+  let medal,title,rank;
+  if(rate===100){medal='👑';title='パーフェクト！';rank='RANK SS';}
+  else if(rate>=90){medal='🏆';title='すごい！';rank='RANK S';}
+  else if(rate>=70){medal='🥇';title='よくできました！';rank='RANK A';}
+  else if(rate>=50){medal='🥈';title='もうすこし！';rank='RANK B';}
+  else{medal='🥉';title='がんばろう！';rank='RANK C';}
+  document.getElementById('result-medal').textContent=medal;
+  document.getElementById('result-title').textContent=title;
+  document.getElementById('result-rank').textContent=rank;
+}
+
+document.getElementById('retry-btn').addEventListener('click',startQuiz);
+document.getElementById('home-btn').addEventListener('click',()=>{stopSpeak();clearAnimTimers();showScreen('start');});
+</script>
+</body>
+</html>
